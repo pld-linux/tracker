@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	deskbar_applet	# don't build GNOME Deskbar applet extension
 %bcond_without	gui		# don't build GNOME based GUI
 #
 Summary:	Tracker - an indexing subsystem
@@ -11,10 +12,12 @@ License:	GPL v2+
 Group:		Applications
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
 # Source0-md5:	4f2d250d65f0be283ae456aede99a85b
+Patch0:		%{name}-assorted_fixes.patch
 URL:		http://www.tracker-project.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 %{?with_gui:BuildRequires:	dbus-glib-devel >= 0.74}
+%{?with_deskbar_applet:BuildRequires:	gnome-applet-deskbar-devel >= 2.20.0}
 BuildRequires:	exempi-devel >= 1.99.5
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.14.5
@@ -86,6 +89,19 @@ Automatic session startup integration for Tracker.
 
 %description startup -l pl.UTF-8
 Integracja funkcji automatycznego startu Tracker.
+
+%package -n gnome-applet-deskbar-extension-tracker
+Summary:	Tracker extension for GNOME Deskbar applet
+Summary(pl.UTF-8):	Rozszerzenie Trackera dla apletu GNOME Deskbar
+Group:		X11/Applications
+Requires:	gnome-applet-deskbar >= 2.20.0
+Requires:	%{name}-search-gui = %{version}-%{release}
+
+%description -n gnome-applet-deskbar-extension-tracker
+Tracker extension for GNOME Deskbar applet.
+
+%description -n gnome-applet-deskbar-extension-tracker -l pl.UTF-8
+Rozszerzenie Trackera do apletu GNOME Deskbar.
 
 %package -n libtracker
 Summary:	Tracker library
@@ -164,6 +180,7 @@ Statyczna biblioteka Tracker-gtk.
 
 %prep
 %setup -q
+%patch0 -p0
 
 %build
 %{__intltoolize}
@@ -172,7 +189,11 @@ Statyczna biblioteka Tracker-gtk.
 %{__autoconf}
 %{__automake}
 %configure \
+	%if %{with deskbar_applet}
 	--enable-deskbar-applet=module \
+	%else
+	--disable-deskbar-applet \
+	%endif
 	--enable-external-qdbm \
 	--enable-video-extractor=gstreamer \
 	--enable-file-monitoring=inotify \
@@ -188,6 +209,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with deskbar_applet}
+%py_comp $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible
+%py_ocomp $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible
+rm -f $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible/*.py
+%endif
 
 %find_lang %{name}
 
@@ -334,6 +361,12 @@ rm -rf $RPM_BUILD_ROOT
 %files startup
 %defattr(644,root,root,755)
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
+
+%if %{with deskbar_applet}
+%files -n gnome-applet-deskbar-extension-tracker
+%defattr(644,root,root,755)
+%{_libdir}/deskbar-applet/modules-2.20-compatible/tracker-module.py[co]
+%endif
 
 %files -n libtracker
 %defattr(644,root,root,755)
