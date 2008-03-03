@@ -6,13 +6,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.6.4
-Release:	3
+Version:	0.6.6
+Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
-# Source0-md5:	4f2d250d65f0be283ae456aede99a85b
-Patch0:		%{name}-assorted_fixes.patch
+# Source0-md5:	0845998f8f0d715b3f1b306d59fdae4d
 URL:		http://www.tracker-project.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
@@ -180,7 +179,6 @@ Statyczna biblioteka Tracker-gtk.
 
 %prep
 %setup -q
-%patch0 -p0
 
 %build
 %{__intltoolize}
@@ -248,6 +246,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-thumbnailer
 %attr(755,root,root) %{_bindir}/trackerd
 %dir %{_libdir}/tracker
+%dir %{_libdir}/tracker/extract-modules
+%attr(755,root,root) %{_libdir}/tracker/extract-modules/libextract*.so
 %dir %{_libdir}/tracker/filters
 %dir %{_libdir}/tracker/filters/application
 %attr(755,root,root) %{_libdir}/tracker/filters/application/csv_filter
@@ -288,8 +288,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker/thumbnailers/application/vnd.oasis.opendocument.spreadsheet_thumbnailer
 %attr(755,root,root) %{_libdir}/tracker/thumbnailers/application/vnd.oasis.opendocument.text_thumbnailer
 %dir %{_libdir}/tracker/thumbnailers/image
+%attr(755,root,root) %{_libdir}/tracker/thumbnailers/image/gif_thumbnailer
 %attr(755,root,root) %{_libdir}/tracker/thumbnailers/image/jpeg_thumbnailer
 %attr(755,root,root) %{_libdir}/tracker/thumbnailers/image/png_thumbnailer
+%attr(755,root,root) %{_libdir}/tracker/thumbnailers/image/tiff_thumbnailer
 %{_datadir}/dbus-1/services/tracker.service
 %dir %{_datadir}/tracker
 %dir %{_datadir}/tracker/languages
@@ -347,6 +349,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-preferences
 %attr(755,root,root) %{_bindir}/tracker-search-tool
 %{_datadir}/tracker/icons
+%{_datadir}/tracker/tracker-applet-prefs.glade
 %{_datadir}/tracker/tracker-preferences.glade
 %{_desktopdir}/tracker-preferences.desktop
 %{_desktopdir}/tracker-search-tool.desktop
