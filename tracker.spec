@@ -65,7 +65,7 @@ Tracker jest podsystemem indeksującym i wyszukującym.
 
 %package search-gui
 Summary:	GNOME based Tracker GUI
-Summary(pl.UTF-8):	Oparty na GNOME graficzny interfejs dla Tracker
+Summary(pl.UTF-8):	Oparty na GNOME graficzny interfejs dla Trackera
 Group:		X11/Applications
 Requires(post,postun):	gtk+2
 Requires(post,postun):	hicolor-icon-theme
@@ -76,11 +76,11 @@ Requires:	libtracker-gtk = %{version}-%{release}
 GNOME based Tracker GUI.
 
 %description search-gui -l pl.UTF-8
-Oparty na GNOME graficzny interfejs dla Tracker.
+Oparty na GNOME graficzny interfejs dla Trackera.
 
 %package startup
 Summary:	Automatic startup integration for Tracker
-Summary(pl.UTF-8):	Integracja funkcji automatycznego startu Tracker
+Summary(pl.UTF-8):	Integracja funkcji automatycznego startu Trackera
 Group:		Applications
 Requires:	%{name} = %{version}-%{release}
 
@@ -88,7 +88,7 @@ Requires:	%{name} = %{version}-%{release}
 Automatic session startup integration for Tracker.
 
 %description startup -l pl.UTF-8
-Integracja funkcji automatycznego startu Tracker.
+Integracja funkcji automatycznego startu Trackera.
 
 %package -n gnome-applet-deskbar-extension-tracker
 Summary:	Tracker extension for GNOME Deskbar applet
@@ -189,18 +189,18 @@ Statyczna biblioteka Tracker-gtk.
 %{__autoconf}
 %{__automake}
 %configure \
-	%if %{with deskbar_applet}
+%if %{with deskbar_applet}
 	--enable-deskbar-applet=module \
-	%else
+%else
 	--disable-deskbar-applet \
-	%endif
+%endif
 	--enable-external-qdbm \
 	--enable-video-extractor=gstreamer \
 	--enable-file-monitoring=inotify \
-	%{?!with_gui:--disable-gui} \
-	%{?!with_gui:--disable-libtrackergtk} \
-	%{?!with_gui:--disable-trackerapplet} \
-	%{?!with_gui:--disable-preferences}
+	%{!?with_gui:--disable-gui} \
+	%{!?with_gui:--disable-libtrackergtk} \
+	%{!?with_gui:--disable-trackerapplet} \
+	%{!?with_gui:--disable-preferences}
 
 %{__make}
 
@@ -227,10 +227,10 @@ rm -rf $RPM_BUILD_ROOT
 %postun search-gui
 %update_icon_cache hicolor
 
-%post -n libtracker -p /sbin/ldconfig
+%post	-n libtracker -p /sbin/ldconfig
 %postun	-n libtracker -p /sbin/ldconfig
 
-%post -n libtracker-gtk -p /sbin/ldconfig
+%post	-n libtracker-gtk -p /sbin/ldconfig
 %postun	-n libtracker-gtk -p /sbin/ldconfig
 
 %files -f %{name}.lang
