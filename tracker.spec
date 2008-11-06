@@ -21,7 +21,7 @@ BuildRequires:	automake
 BuildRequires:	exempi-devel >= 1.99.5
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.14.5
-BuildRequires:	gmime-devel >= 2.2.15
+BuildRequires:	gmime22-devel >= 2.2.15
 %{?with_gui:BuildRequires:	gnome-common >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-desktop-devel >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-vfs2-devel >= 2.20.0}
