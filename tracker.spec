@@ -7,13 +7,13 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	0.6.6
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		Applications
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
 # Source0-md5:	0845998f8f0d715b3f1b306d59fdae4d
 Patch0:		%{name}-strcmp.patch
-URL:		http://www.tracker-project.org/
+URL:		http://projects.gnome.org/tracker/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 %{?with_gui:BuildRequires:	dbus-glib-devel >= 0.74}
