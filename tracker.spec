@@ -6,12 +6,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.6.94
-Release:	2
+Version:	0.6.6
+Release:	7
 License:	GPL v2+
 Group:		Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
-# Source0-md5:	12d05088ef186c75bce9d1d6fb90e04a
+Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
+# Source0-md5:	0845998f8f0d715b3f1b306d59fdae4d
 Patch0:		%{name}-strcmp.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	autoconf >= 2.60
@@ -21,7 +21,7 @@ BuildRequires:	automake
 BuildRequires:	exempi-devel >= 1.99.5
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.14.5
-BuildRequires:	gmime-devel >= 2.2.15
+BuildRequires:	gmime22-devel >= 2.2.15
 %{?with_gui:BuildRequires:	gnome-common >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-desktop-devel >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-vfs2-devel >= 2.20.0}
@@ -180,7 +180,7 @@ Statyczna biblioteka Tracker-gtk.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 
 %build
 %{__intltoolize}
