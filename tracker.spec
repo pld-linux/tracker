@@ -17,11 +17,11 @@ URL:		http://projects.gnome.org/tracker/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 %{?with_gui:BuildRequires:	dbus-glib-devel >= 0.74}
-%{?with_deskbar_applet:BuildRequires:	gnome-applet-deskbar-devel >= 2.20.0}
 BuildRequires:	exempi-devel >= 1.99.5
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.14.5
 BuildRequires:	gmime22-devel >= 2.2.15
+%{?with_deskbar_applet:BuildRequires:	gnome-applet-deskbar-devel >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-common >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-desktop-devel >= 2.20.0}
 %{?with_gui:BuildRequires:	gnome-vfs2-devel >= 2.20.0}
@@ -40,6 +40,7 @@ BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.6
 BuildRequires:	qdbm-devel >= 1.8
+%{?with_deskbar_applet:BuildRequires:	rpm-pythonprov}
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	sqlite3-devel >= 3.4.0
 BuildRequires:	zlib-devel
@@ -94,8 +95,8 @@ Integracja funkcji automatycznego startu Trackera.
 Summary:	Tracker extension for GNOME Deskbar applet
 Summary(pl.UTF-8):	Rozszerzenie Trackera dla apletu GNOME Deskbar
 Group:		X11/Applications
-Requires:	gnome-applet-deskbar >= 2.20.0
 Requires:	%{name}-search-gui = %{version}-%{release}
+Requires:	gnome-applet-deskbar >= 2.20.0
 
 %description -n gnome-applet-deskbar-extension-tracker
 Tracker extension for GNOME Deskbar applet.
