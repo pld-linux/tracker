@@ -5,12 +5,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.7.23
+Version:	0.7.25
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.7/%{name}-%{version}.tar.bz2
-# Source0-md5:	41b00c0782be0e7f4f42a3a23d93025b
+# Source0-md5:	b95f8b6a321132ecd7d0ba7e181b2eed
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	DeviceKit-power-devel >= 007
 BuildRequires:	GConf2-devel >= 2.20.0
@@ -176,7 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.28/plugins/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.7/*/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.7/push-modules/daemon/*.la
@@ -316,8 +316,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/evolution/2.28/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
-%{_libdir}/evolution/2.28/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
+%attr(755,root,root) %{_libdir}/evolution/2.30/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
+%{_libdir}/evolution/2.30/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %if %{with deskbar_applet}
 %files -n gnome-applet-deskbar-extension-tracker
