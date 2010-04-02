@@ -1,19 +1,15 @@
-#
-# Conditional build:
-%bcond_with	deskbar_applet	# don't build GNOME Deskbar applet extension
-#
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.7.25
+Version:	0.8.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.7/%{name}-%{version}.tar.bz2
-# Source0-md5:	b95f8b6a321132ecd7d0ba7e181b2eed
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
+# Source0-md5:	38332acd7500eb7347f8cf4655d30441
 URL:		http://projects.gnome.org/tracker/
-BuildRequires:	DeviceKit-power-devel >= 007
 BuildRequires:	GConf2-devel >= 2.20.0
+BuildRequires:	UPower-devel
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
@@ -25,7 +21,6 @@ BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.20.0
-%{?with_deskbar_applet:BuildRequires:	gnome-applet-deskbar-devel >= 2.20.0}
 BuildRequires:	gnome-panel-devel
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gtk+2-devel >= 2:2.16.0
@@ -61,6 +56,7 @@ Requires:	hicolor-icon-theme
 Suggests:	odt2txt
 # for gunzip
 Suggests:	gzip
+Obsoletes:	gnome-applet-deskbar-extension-tracker
 Obsoletes:	tracker-search-gui
 Obsoletes:	tracker-startup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -70,7 +66,6 @@ Tracker is an indexing sub-system and search aggregator.
 
 %description -l pl.UTF-8
 Tracker jest podsystemem indeksującym i wyszukującym.
-
 
 %package libs
 Summary:	Tracker libraries
@@ -126,19 +121,6 @@ Tracker plugin for Evolution.
 %description -n evolution-plugin-tracker -l pl.UTF-8
 Wtyczka Trackera do Evolution.
 
-%package -n gnome-applet-deskbar-extension-tracker
-Summary:	Tracker extension for GNOME Deskbar applet
-Summary(pl.UTF-8):	Rozszerzenie Trackera dla apletu GNOME Deskbar
-Group:		X11/Applications
-Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-applet-deskbar >= 2.20.0
-
-%description -n gnome-applet-deskbar-extension-tracker
-Tracker extension for GNOME Deskbar applet.
-
-%description -n gnome-applet-deskbar-extension-tracker -l pl.UTF-8
-Rozszerzenie Trackera do apletu GNOME Deskbar.
-
 %package -n nautilus-extension-tracker
 Summary:	Tracker extension for Nautilus
 Summary(pl.UTF-8):	Rozszerzenie Trackera dla Nautilusa
@@ -166,7 +148,7 @@ Dodaje integrację Trackera z Nautilusem.
 	--enable-libvorbis \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir} \
-	%{__enable_disable deskbar_applet deskbar-applet}
+	--disable-silent-rules
 
 %{__make}
 
@@ -178,14 +160,8 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.7/*/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.7/push-modules/daemon/*.la
-
-%if %{with deskbar_applet}
-%py_comp $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible
-%py_ocomp $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible
-rm -f $RPM_BUILD_ROOT%{_libdir}/deskbar-applet/modules-2.20-compatible/*.py
-%endif
+rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/*/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/push-modules/daemon/*.la
 
 %find_lang tracker
 
@@ -220,28 +196,28 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-search-bar
 %attr(755,root,root) %{_libdir}/tracker-store
 %attr(755,root,root) %{_libdir}/tracker-writeback
-%dir %{_libdir}/tracker-0.7/extract-modules
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-abw.so
-#%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-flac.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-gstreamer.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-html.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-jpeg.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-mp3.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-msoffice.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-oasis.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-pdf.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-playlist.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-png.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-ps.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-text.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-tiff.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-vorbis.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/extract-modules/libextract-xmp.so
-%dir %{_libdir}/tracker-0.7/push-modules
-%dir %{_libdir}/tracker-0.7/push-modules/daemon
-%attr(755,root,root) %{_libdir}/tracker-0.7/push-modules/daemon/libtracker-module_kmail-daemon-module.so
-%dir %{_libdir}/tracker-0.7/writeback-modules
-%attr(755,root,root) %{_libdir}/tracker-0.7/writeback-modules/libwriteback-xmp.so
+%dir %{_libdir}/tracker-0.8/extract-modules
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-abw.so
+#%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-flac.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-gstreamer.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-html.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-jpeg.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-mp3.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-msoffice.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-oasis.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-pdf.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-playlist.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-png.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-ps.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-text.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-tiff.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-vorbis.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-xmp.so
+%dir %{_libdir}/tracker-0.8/push-modules
+%dir %{_libdir}/tracker-0.8/push-modules/daemon
+%attr(755,root,root) %{_libdir}/tracker-0.8/push-modules/daemon/libtracker-module_kmail-daemon-module.so
+%dir %{_libdir}/tracker-0.8/writeback-modules
+%attr(755,root,root) %{_libdir}/tracker-0.8/writeback-modules/libwriteback-xmp.so
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-status-icon.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
@@ -278,33 +254,35 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-client-0.7.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-client-0.7.so.0
-%attr(755,root,root) %{_libdir}/libtracker-extract-0.7.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-extract-0.7.so.0
-%attr(755,root,root) %{_libdir}/libtracker-miner-0.7.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-0.7.so.0
+%attr(755,root,root) %{_libdir}/libtracker-client-0.8.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-client-0.8.so.0
+%attr(755,root,root) %{_libdir}/libtracker-extract-0.8.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-extract-0.8.so.0
+%attr(755,root,root) %{_libdir}/libtracker-miner-0.8.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-0.8.so.0
 # required by libtracker-extract and libtracker-miner
-%dir %{_libdir}/tracker-0.7
-%attr(755,root,root) %{_libdir}/tracker-0.7/libtracker-common.so.*
-%attr(755,root,root) %{_libdir}/tracker-0.7/libtracker-data.so.*
+%dir %{_libdir}/tracker-0.8
+%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-common.so.*
+%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-data.so.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-client-0.7.so
-%attr(755,root,root) %{_libdir}/libtracker-extract-0.7.so
-%attr(755,root,root) %{_libdir}/libtracker-miner-0.7.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/libtracker-common.so
-%attr(755,root,root) %{_libdir}/tracker-0.7/libtracker-data.so
-%{_libdir}/libtracker-client-0.7.la
-%{_libdir}/libtracker-extract-0.7.la
-%{_libdir}/libtracker-miner-0.7.la
-%{_libdir}/tracker-0.7/libtracker-common.la
-%{_libdir}/tracker-0.7/libtracker-data.la
-%{_includedir}/tracker-0.7
-%{_pkgconfigdir}/tracker-client-0.7.pc
-%{_pkgconfigdir}/tracker-extract-0.7.pc
-%{_pkgconfigdir}/tracker-miner-0.7.pc
+%attr(755,root,root) %{_libdir}/libtracker-client-0.8.so
+%attr(755,root,root) %{_libdir}/libtracker-extract-0.8.so
+%attr(755,root,root) %{_libdir}/libtracker-miner-0.8.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-common.so
+%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-data.so
+%{_libdir}/libtracker-client-0.8.la
+%{_libdir}/libtracker-extract-0.8.la
+%{_libdir}/libtracker-miner-0.8.la
+%{_libdir}/tracker-0.8/libtracker-common.la
+%{_libdir}/tracker-0.8/libtracker-data.la
+%{_datadir}/vala/vapi/tracker-client-0.8.vapi
+%{_datadir}/vala/vapi/tracker-miner-0.8.vapi
+%{_includedir}/tracker-0.8
+%{_pkgconfigdir}/tracker-client-0.8.pc
+%{_pkgconfigdir}/tracker-extract-0.8.pc
+%{_pkgconfigdir}/tracker-miner-0.8.pc
 
 %files apidocs
 %defattr(644,root,root,755)
@@ -318,12 +296,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/evolution/2.30/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
 %{_libdir}/evolution/2.30/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
-
-%if %{with deskbar_applet}
-%files -n gnome-applet-deskbar-extension-tracker
-%defattr(644,root,root,755)
-%{_libdir}/deskbar-applet/modules-2.20-compatible/tracker-module.py[co]
-%endif
 
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
