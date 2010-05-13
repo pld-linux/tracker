@@ -14,6 +14,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.78
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
 BuildRequires:	evolution-data-server-devel >= 2.26.0
 BuildRequires:	evolution-devel >= 2.26.0
@@ -22,7 +23,9 @@ BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.20.0
 BuildRequires:	gnome-panel-devel
+BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
+BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:	gtk+2-devel >= 2:2.16.0
 BuildRequires:	gtk-doc >= 1.8
 BuildRequires:	hal-devel >= 0.5.10
@@ -41,6 +44,7 @@ BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel >= 0.22
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	nautilus-devel
+BuildRequires:	nss-devel
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.6
 %{?with_deskbar_applet:BuildRequires:	rpm-pythonprov}
