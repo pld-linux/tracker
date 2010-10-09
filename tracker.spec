@@ -17,8 +17,8 @@ BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.78
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
-BuildRequires:	evolution-data-server-devel >= 2.26.0
-BuildRequires:	evolution-devel >= 2.26.0
+BuildRequires:	evolution-data-server-devel >= 2.32.0
+BuildRequires:	evolution-devel >= 2.32.0
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
@@ -118,7 +118,7 @@ Summary:	Tracker plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Trackera do Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.28.0
+Requires:	evolution >= 2.32.0
 
 %description -n evolution-plugin-tracker
 Tracker plugin for Evolution.
