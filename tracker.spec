@@ -1,13 +1,16 @@
+#
+# TODO: unpackaged files
+#
+%define		ver	0.10
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.8.17
-Release:	2
+Version:	0.9.32
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
-# Source0-md5:	503117377b228e4575105c6b4ce34eaa
-Patch0:		%{name}-build.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
+# Source0-md5:	b850338eb06eb0e486918a39e56a505b
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	GConf2-devel >= 2.20.0
 BuildRequires:	UPower-devel
@@ -15,6 +18,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.78
+BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
 BuildRequires:	evolution-data-server-devel >= 2.32.0
@@ -83,7 +87,7 @@ Obsoletes:	libtracker-gtk
 Tracker libraries.
 
 %description libs -l pl.UTF-8
-Bibliotek Trackera.
+Biblioteki Trackera.
 
 %package devel
 Summary:	Header files for Tracker libraries
@@ -141,7 +145,6 @@ Dodaje integrację Trackera z Nautilusem.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__intltoolize}
@@ -165,10 +168,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/*/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/push-modules/daemon/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
 
 %find_lang tracker
 
@@ -192,7 +193,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-info
 %attr(755,root,root) %{_bindir}/tracker-preferences
 %attr(755,root,root) %{_bindir}/tracker-search
-%attr(755,root,root) %{_bindir}/tracker-search-tool
 %attr(755,root,root) %{_bindir}/tracker-sparql
 %attr(755,root,root) %{_bindir}/tracker-stats
 %attr(755,root,root) %{_bindir}/tracker-status
@@ -203,28 +203,24 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-search-bar
 %attr(755,root,root) %{_libdir}/tracker-store
 %attr(755,root,root) %{_libdir}/tracker-writeback
-%dir %{_libdir}/tracker-0.8/extract-modules
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-abw.so
-#%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-flac.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-gstreamer.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-html.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-jpeg.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-mp3.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-msoffice.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-oasis.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-pdf.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-playlist.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-png.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-ps.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-text.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-tiff.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-vorbis.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/extract-modules/libextract-xmp.so
-%dir %{_libdir}/tracker-0.8/push-modules
-%dir %{_libdir}/tracker-0.8/push-modules/daemon
-%attr(755,root,root) %{_libdir}/tracker-0.8/push-modules/daemon/libtracker-module_kmail-daemon-module.so
-%dir %{_libdir}/tracker-0.8/writeback-modules
-%attr(755,root,root) %{_libdir}/tracker-0.8/writeback-modules/libwriteback-xmp.so
+%dir %{_libdir}/tracker-%{ver}/extract-modules
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-abw.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gstreamer.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-html.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-jpeg.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-mp3.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-msoffice.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-oasis.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-pdf.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-playlist.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-png.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-ps.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-text.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-tiff.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-vorbis.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-xmp.so
+%dir %{_libdir}/tracker-%{ver}/writeback-modules
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-status-icon.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
@@ -236,7 +232,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
 %{_datadir}/tracker
 %{_desktopdir}/tracker-preferences.desktop
-%{_desktopdir}/tracker-search-tool.desktop
 %{_iconsdir}/hicolor/*/*/*.png
 %{_iconsdir}/hicolor/*/*/*.svg
 %{_mandir}/man1/tracker-control.1*
@@ -246,7 +241,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tracker-miner-fs.1*
 %{_mandir}/man1/tracker-preferences.1*
 %{_mandir}/man1/tracker-search-bar.1*
-%{_mandir}/man1/tracker-search-tool.1*
 %{_mandir}/man1/tracker-search.1*
 %{_mandir}/man1/tracker-sparql.1*
 %{_mandir}/man1/tracker-stats.1*
@@ -261,41 +255,41 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-client-0.8.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-client-0.8.so.0
-%attr(755,root,root) %{_libdir}/libtracker-extract-0.8.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-extract-0.8.so.0
-%attr(755,root,root) %{_libdir}/libtracker-miner-0.8.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-0.8.so.0
+%attr(755,root,root) %{_libdir}/libtracker-client-%{ver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-client-%{ver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-extract-%{ver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{ver}.so.0
 # required by libtracker-extract and libtracker-miner
-%dir %{_libdir}/tracker-0.8
-%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-common.so.*
-%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-data.so.*
+%dir %{_libdir}/tracker-%{ver}
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so.*
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-client-0.8.so
-%attr(755,root,root) %{_libdir}/libtracker-extract-0.8.so
-%attr(755,root,root) %{_libdir}/libtracker-miner-0.8.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-common.so
-%attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-data.so
-%{_libdir}/libtracker-client-0.8.la
-%{_libdir}/libtracker-extract-0.8.la
-%{_libdir}/libtracker-miner-0.8.la
-%{_libdir}/tracker-0.8/libtracker-common.la
-%{_libdir}/tracker-0.8/libtracker-data.la
-%{_datadir}/vala/vapi/tracker-client-0.8.vapi
-%{_datadir}/vala/vapi/tracker-miner-0.8.vapi
-%{_datadir}/vala/vapi/tracker-miner-0.8.deps
-%{_includedir}/tracker-0.8
-%{_pkgconfigdir}/tracker-client-0.8.pc
-%{_pkgconfigdir}/tracker-extract-0.8.pc
-%{_pkgconfigdir}/tracker-miner-0.8.pc
+%attr(755,root,root) %{_libdir}/libtracker-client-%{ver}.so
+%attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so
+%{_libdir}/libtracker-client-%{ver}.la
+%{_libdir}/libtracker-extract-%{ver}.la
+%{_libdir}/libtracker-miner-%{ver}.la
+%{_libdir}/tracker-%{ver}/libtracker-common.la
+%{_libdir}/tracker-%{ver}/libtracker-data.la
+%{_datadir}/vala/vapi/tracker-client-%{ver}.vapi
+%{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
+%{_datadir}/vala/vapi/tracker-miner-%{ver}.deps
+%{_includedir}/tracker-%{ver}
+%{_pkgconfigdir}/tracker-client-%{ver}.pc
+%{_pkgconfigdir}/tracker-extract-%{ver}.pc
+%{_pkgconfigdir}/tracker-miner-%{ver}.pc
 
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/libtracker-client
-%{_gtkdocdir}/libtracker-common
+#%%{_gtkdocdir}/libtracker-common
 %{_gtkdocdir}/libtracker-extract
 %{_gtkdocdir}/libtracker-miner
 %{_gtkdocdir}/ontology
