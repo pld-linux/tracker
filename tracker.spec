@@ -2,7 +2,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	0.8.17
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
@@ -56,9 +56,9 @@ BuildRequires:	totem-pl-parser-devel
 BuildRequires:	vala
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	zlib-devel
-Requires(post,postun):	gtk+2
+Requires(post,postun):	gtk-update-icon-cache
+Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	hicolor-icon-theme
 Suggests:	odt2txt
 # for gunzip
 Suggests:	gzip
