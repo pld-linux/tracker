@@ -1,16 +1,16 @@
 #
-# TODO: unpackaged files
+# TODO: unpackaged files (libs' modules)
 #
 %define		ver	0.10
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.9.32
+Version:	0.9.38
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
-# Source0-md5:	b850338eb06eb0e486918a39e56a505b
+# Source0-md5:	ce3349c405808f4844c6236a2b8cf042
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	GConf2-devel >= 2.20.0
 BuildRequires:	UPower-devel
@@ -191,12 +191,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-explorer
 %attr(755,root,root) %{_bindir}/tracker-import
 %attr(755,root,root) %{_bindir}/tracker-info
+%attr(755,root,root) %{_bindir}/tracker-needle
 %attr(755,root,root) %{_bindir}/tracker-preferences
 %attr(755,root,root) %{_bindir}/tracker-search
 %attr(755,root,root) %{_bindir}/tracker-sparql
 %attr(755,root,root) %{_bindir}/tracker-stats
-%attr(755,root,root) %{_bindir}/tracker-status
-%attr(755,root,root) %{_bindir}/tracker-status-icon
 %attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
@@ -222,9 +221,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
-%{_sysconfdir}/xdg/autostart/tracker-status-icon.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
-%{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
@@ -239,13 +236,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tracker-import.1*
 %{_mandir}/man1/tracker-info.1*
 %{_mandir}/man1/tracker-miner-fs.1*
+%{_mandir}/man1/tracker-needle-fs.1*
 %{_mandir}/man1/tracker-preferences.1*
 %{_mandir}/man1/tracker-search-bar.1*
 %{_mandir}/man1/tracker-search.1*
 %{_mandir}/man1/tracker-sparql.1*
 %{_mandir}/man1/tracker-stats.1*
-%{_mandir}/man1/tracker-status-icon.1*
-%{_mandir}/man1/tracker-status.1*
 %{_mandir}/man1/tracker-store.1*
 %{_mandir}/man1/tracker-tag.1*
 %{_mandir}/man5/tracker-extract.cfg.5*
@@ -261,6 +257,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libtracker-extract-%{ver}.so.0
 %attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{ver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{ver}.so.0
 # required by libtracker-extract and libtracker-miner
 %dir %{_libdir}/tracker-%{ver}
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so.*
@@ -276,6 +274,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libtracker-client-%{ver}.la
 %{_libdir}/libtracker-extract-%{ver}.la
 %{_libdir}/libtracker-miner-%{ver}.la
+%{_libdir}/libtracker-sparql-%{ver}.la
 %{_libdir}/tracker-%{ver}/libtracker-common.la
 %{_libdir}/tracker-%{ver}/libtracker-data.la
 %{_datadir}/vala/vapi/tracker-client-%{ver}.vapi
@@ -285,6 +284,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/tracker-client-%{ver}.pc
 %{_pkgconfigdir}/tracker-extract-%{ver}.pc
 %{_pkgconfigdir}/tracker-miner-%{ver}.pc
+%{_pkgconfigdir}/tracker-sparql-%{ver}.pc
 
 %files apidocs
 %defattr(644,root,root,755)
