@@ -1,5 +1,5 @@
 #
-# TODO: unpackaged files (libs' modules)
+# TODO: - re-enable evolution plugin and tracker-search-bar
 #
 %define		ver	0.10
 Summary:	Tracker - an indexing subsystem
@@ -21,12 +21,12 @@ BuildRequires:	dbus-glib-devel >= 0.78
 BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
-BuildRequires:	evolution-data-server-devel >= 2.32.0
-BuildRequires:	evolution-devel >= 2.32.0
+BuildRequires:	evolution-data-server-devel >= 2.91.91
+BuildRequires:	evolution-devel >= 2.91.91
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
-BuildRequires:	glib2-devel >= 1:2.20.0
+BuildRequires:	glib2-devel >= 1:2.26.0
 BuildRequires:	gnome-panel-devel
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
@@ -156,6 +156,7 @@ Dodaje integrację Trackera z Nautilusem.
 %configure \
 	--enable-libvorbis \
 	--enable-gtk-doc \
+	--enable-miner-evolution \
 	--with-html-dir=%{_gtkdocdir} \
 	--disable-unit-tests \
 	--disable-silent-rules
