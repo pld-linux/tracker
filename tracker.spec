@@ -1,6 +1,4 @@
 #
-# TODO: - re-enable evolution plugin and tracker-search-bar
-#
 %define		ver	0.10
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
@@ -311,8 +309,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)
-#%%attr(755,root,root) %{_libdir}/evolution/2.32/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
-#%%{_libdir}/evolution/2.32/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
+%attr(755,root,root) %{_libdir}/evolution/3.0/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
+%{_libdir}/evolution/3.0/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
