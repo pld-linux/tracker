@@ -62,7 +62,6 @@ BuildRequires:	zlib-devel
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	hicolor-icon-theme
-Suggests:	odt2txt
 # for gunzip
 Suggests:	gzip
 Obsoletes:	gnome-applet-deskbar-extension-tracker
@@ -130,6 +129,19 @@ Tracker plugin for Evolution.
 
 %description -n evolution-plugin-tracker -l pl.UTF-8
 Wtyczka Trackera do Evolution.
+
+%package -n gnome-applet-tracker
+Summary:	Search applet for GNOME panel
+Summary(pl.UTF-8):	Aplet wyszukiwania dla panelu GNOME
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	gnome-panel >= 2.91.0
+
+%description -n gnome-applet-tracker
+Search applet for GNOME panel.
+
+%description -n gnome-applet-tracker -l pl.UTF-8
+Aplet wyszukiwania dla panelu GNOME.
 
 %package -n nautilus-extension-tracker
 Summary:	Tracker extension for Nautilus
@@ -208,7 +220,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-extract
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
 %attr(755,root,root) %{_libdir}/tracker-miner-rss
-%attr(755,root,root) %{_libdir}/tracker-search-bar
 %attr(755,root,root) %{_libdir}/tracker-store
 %attr(755,root,root) %{_libdir}/tracker-writeback
 %dir %{_libdir}/tracker-%{ver}/extract-modules
@@ -246,8 +257,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
-%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
-%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
 %{_datadir}/tracker
 %{_desktopdir}/tracker-needle.desktop
 %{_desktopdir}/tracker-preferences.desktop
@@ -260,7 +269,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tracker-miner-fs.1*
 %{_mandir}/man1/tracker-needle.1*
 %{_mandir}/man1/tracker-preferences.1*
-%{_mandir}/man1/tracker-search-bar.1*
 %{_mandir}/man1/tracker-search.1*
 %{_mandir}/man1/tracker-sparql.1*
 %{_mandir}/man1/tracker-stats.1*
@@ -315,6 +323,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/evolution/3.0/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
 %{_libdir}/evolution/3.0/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
+
+%files -n gnome-applet-tracker
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libexecdir}/tracker-search-bar
+%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
+%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
+%{_mandir}/man1/tracker-search-bar.1*
 
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
