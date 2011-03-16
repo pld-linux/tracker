@@ -1,21 +1,19 @@
-#
 %define		ver	0.10
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.10.2
+Version:	0.10.3
 Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-# Source0-md5:	b6b83267c71755e235b517edf2d9b905
+# Source0-md5:	5a5dc6a1cfa50d5b772e26b9b8db1d6c
 URL:		http://projects.gnome.org/tracker/
-BuildRequires:	GConf2-devel >= 2.20.0
-BuildRequires:	UPower-devel
-BuildRequires:	autoconf >= 2.60
-BuildRequires:	automake
-BuildRequires:	dbus-devel >= 1.0.0
-BuildRequires:	dbus-glib-devel >= 0.78
+BuildRequires:	NetworkManager-devel >= 0.8.0
+BuildRequires:	autoconf >= 2.64
+BuildRequires:	automake >= 1:1.11
+BuildRequires:	dbus-devel >= 1.3.1
+BuildRequires:	dbus-glib-devel >= 0.82
 BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
@@ -24,42 +22,46 @@ BuildRequires:	evolution-devel >= 2.91.91
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
+BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.26.0
-BuildRequires:	gnome-panel-devel
+BuildRequires:	gnome-panel-devel >= 2.91.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gstreamer-plugins-base-devel
-BuildRequires:	gtk+2-devel >= 2:2.16.0
+BuildRequires:	gtk+2-devel >= 2:2.18.0
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc >= 1.8
-BuildRequires:	hal-devel >= 0.5.10
-BuildRequires:	id3lib-devel >= 3.8.3
-BuildRequires:	intltool >= 0.37.0
+BuildRequires:	gupnp-dlna-devel >= 0.5
+BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.3
+BuildRequires:	libgnome-keyring-devel >= 2.26.0
+BuildRequires:	libgrss-devel >= 0.3
 BuildRequires:	libgsf-devel >= 1.14.7
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libnotify-devel >= 0.4.3
 BuildRequires:	libpng-devel >= 2:1.2.24
 BuildRequires:	libtiff-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2.2
+BuildRequires:	libunistring-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel >= 0.22
 BuildRequires:	libxml2-devel >= 1:2.6.31
-BuildRequires:	nautilus-devel
-BuildRequires:	nss-devel
+BuildRequires:	nautilus-devel >= 2.91.0
 BuildRequires:	pkgconfig
-BuildRequires:	poppler-glib-devel >= 0.6
-%{?with_deskbar_applet:BuildRequires:	rpm-pythonprov}
+BuildRequires:	poppler-glib-devel >= 0.16.0
+BuildRequires:	rest-devel >= 0.6
 BuildRequires:	rpmbuild(macros) >= 1.311
-BuildRequires:	sqlite3-devel >= 3.6.16
+BuildRequires:	sqlite3-devel >= 3.7.0
+BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
+BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	vala
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	zlib-devel
 Requires(post,postun):	gtk-update-icon-cache
-Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	hicolor-icon-theme
 Suggests:	odt2txt
 # for gunzip
 Suggests:	gzip
@@ -92,6 +94,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	glib2-devel >= 1:2.26.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
@@ -120,7 +123,7 @@ Summary:	Tracker plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Trackera do Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.32.0
+Requires:	evolution >= 2.91.91
 
 %description -n evolution-plugin-tracker
 Tracker plugin for Evolution.
@@ -133,7 +136,7 @@ Summary:	Tracker extension for Nautilus
 Summary(pl.UTF-8):	Rozszerzenie Trackera dla Nautilusa
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	nautilus >= 2.26.0
+Requires:	nautilus >= 2.91.0
 
 %description -n nautilus-extension-tracker
 Adds Tracker integration to Nautilus.
@@ -152,12 +155,15 @@ Dodaje integrację Trackera z Nautilusem.
 %{__autoheader}
 %{__automake}
 %configure \
+	--enable-libflac \
 	--enable-libvorbis \
 	--enable-gtk-doc \
 	--enable-miner-evolution \
+	--enable-gdkpixbuf \
 	--with-html-dir=%{_gtkdocdir} \
 	--disable-unit-tests \
-	--disable-silent-rules
+	--disable-silent-rules \
+	--disable-hal
 
 %{__make}
 
@@ -167,10 +173,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/extract-modules/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/sparql-modules/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/writeback-modules/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/3.0/plugins/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-*/*.la
 
 %find_lang tracker
 
@@ -200,13 +207,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
-#%%attr(755,root,root) %{_libdir}/tracker-search-bar
+%attr(755,root,root) %{_libdir}/tracker-miner-rss
+%attr(755,root,root) %{_libdir}/tracker-search-bar
 %attr(755,root,root) %{_libdir}/tracker-store
 %attr(755,root,root) %{_libdir}/tracker-writeback
 %dir %{_libdir}/tracker-%{ver}/extract-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-abw.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-flac.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gif.so
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gstreamer.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gupnp-dlna.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-html.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-icon.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-jpeg.so
@@ -229,12 +238,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
+%{_sysconfdir}/xdg/autostart/tracker-miner-rss.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
-#%%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
+%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
+%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
 %{_datadir}/tracker
 %{_desktopdir}/tracker-needle.desktop
 %{_desktopdir}/tracker-preferences.desktop
@@ -247,7 +260,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tracker-miner-fs.1*
 %{_mandir}/man1/tracker-needle.1*
 %{_mandir}/man1/tracker-preferences.1*
-#%%{_mandir}/man1/tracker-search-bar.1*
+%{_mandir}/man1/tracker-search-bar.1*
 %{_mandir}/man1/tracker-search.1*
 %{_mandir}/man1/tracker-sparql.1*
 %{_mandir}/man1/tracker-stats.1*
@@ -270,8 +283,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{ver}.so.0
 # required by libtracker-extract and libtracker-miner
 %dir %{_libdir}/tracker-%{ver}
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so.*
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so.*
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so*
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so*
 
 %files devel
 %defattr(644,root,root,755)
@@ -279,14 +292,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so
-%{_libdir}/libtracker-client-%{ver}.la
-%{_libdir}/libtracker-extract-%{ver}.la
-%{_libdir}/libtracker-miner-%{ver}.la
-%{_libdir}/libtracker-sparql-%{ver}.la
-%{_libdir}/tracker-%{ver}/libtracker-common.la
-%{_libdir}/tracker-%{ver}/libtracker-data.la
 %{_datadir}/vala/vapi/tracker-client-%{ver}.vapi
 %{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
 %{_datadir}/vala/vapi/tracker-sparql-%{ver}.vapi
@@ -301,7 +306,6 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/libtracker-client
-#%%{_gtkdocdir}/libtracker-common
 %{_gtkdocdir}/libtracker-extract
 %{_gtkdocdir}/libtracker-miner
 %{_gtkdocdir}/libtracker-sparql
@@ -314,4 +318,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
+%attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
