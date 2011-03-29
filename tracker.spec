@@ -8,6 +8,7 @@ License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
 # Source0-md5:	6c2040ba96a34932a073317071b3da91
+Patch0:		evolution3.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -158,6 +159,7 @@ Dodaje integrację Trackera z Nautilusem.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__intltoolize}
