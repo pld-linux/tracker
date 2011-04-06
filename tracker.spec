@@ -3,12 +3,11 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	0.10.6
-Release:	0.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
 # Source0-md5:	55f4e808cd6b10da8f891cd945fefe84
-Patch0:		evolution3.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -18,14 +17,14 @@ BuildRequires:	dbus-glib-devel >= 0.82
 BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
-BuildRequires:	evolution-data-server-devel >= 2.91.91
-BuildRequires:	evolution-devel >= 2.91.91
+BuildRequires:	evolution-data-server-devel >= 3.0.0
+BuildRequires:	evolution-devel >= 3.0.0
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.26.0
-BuildRequires:	gnome-panel-devel >= 2.91.0
+BuildRequires:	gnome-panel-devel >= 3.0.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gstreamer-plugins-base-devel
@@ -48,7 +47,7 @@ BuildRequires:	libunistring-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel >= 0.22
 BuildRequires:	libxml2-devel >= 1:2.6.31
-BuildRequires:	nautilus-devel >= 2.91.0
+BuildRequires:	nautilus-devel >= 3.0.0
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rest-devel >= 0.6
@@ -123,7 +122,7 @@ Summary:	Tracker plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Trackera do Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.91.91
+Requires:	evolution >= 3.0.0
 
 %description -n evolution-plugin-tracker
 Tracker plugin for Evolution.
@@ -136,7 +135,7 @@ Summary:	Search applet for GNOME panel
 Summary(pl.UTF-8):	Aplet wyszukiwania dla panelu GNOME
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-panel >= 2.91.0
+Requires:	gnome-panel >= 3.0.0
 
 %description -n gnome-applet-tracker
 Search applet for GNOME panel.
@@ -149,7 +148,7 @@ Summary:	Tracker extension for Nautilus
 Summary(pl.UTF-8):	Rozszerzenie Trackera dla Nautilusa
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	nautilus >= 2.91.0
+Requires:	nautilus >= 3.0.0
 
 %description -n nautilus-extension-tracker
 Adds Tracker integration to Nautilus.
@@ -159,7 +158,6 @@ Dodaje integrację Trackera z Nautilusem.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__intltoolize}
