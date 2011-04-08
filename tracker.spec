@@ -2,12 +2,13 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.10.6
+Version:	0.10.8
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-# Source0-md5:	55f4e808cd6b10da8f891cd945fefe84
+# Source0-md5:	58407c7ee04df4043cadd9095d64da5d
+Patch0:		link.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -28,6 +29,7 @@ BuildRequires:	gnome-panel-devel >= 3.0.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gstreamer-plugins-base-devel
+BuildRequires:	gobject-introspection-devel >= 0.9.5
 BuildRequires:	gtk+2-devel >= 2:2.18.0
 BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc >= 1.8
@@ -56,7 +58,7 @@ BuildRequires:	sqlite3-devel >= 3.7.0
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
-BuildRequires:	vala
+BuildRequires:	vala >= 0.12
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	zlib-devel
 Requires(post,postun):	gtk-update-icon-cache
@@ -158,6 +160,7 @@ Dodaje integrację Trackera z Nautilusem.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__intltoolize}
@@ -242,9 +245,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-vorbis.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-msoffice-xml.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-xmp.so
-%dir %{_libdir}/tracker-%{ver}/sparql-modules
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-bus.so
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-direct.so
+#%dir %{_libdir}/tracker-%{ver}/sparql-modules
+#%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-bus.so
+#%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-direct.so
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
@@ -293,6 +296,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so*
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so*
+%{_libdir}/girepository-1.0/TrackerExtract-0.10.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-0.10.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -310,6 +315,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/tracker-extract-%{ver}.pc
 %{_pkgconfigdir}/tracker-miner-%{ver}.pc
 %{_pkgconfigdir}/tracker-sparql-%{ver}.pc
+%{_datadir}/gir-1.0/Tracker-0.10.gir
+%{_datadir}/gir-1.0/TrackerExtract-0.10.gir
+%{_datadir}/gir-1.0/TrackerMiner-0.10.gir
 
 %files apidocs
 %defattr(644,root,root,755)
