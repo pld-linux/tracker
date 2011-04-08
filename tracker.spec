@@ -245,9 +245,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-vorbis.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-msoffice-xml.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-xmp.so
-#%dir %{_libdir}/tracker-%{ver}/sparql-modules
-#%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-bus.so
-#%attr(755,root,root) %{_libdir}/tracker-%{ver}/sparql-modules/libtracker-direct.so
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
