@@ -2,12 +2,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.10.8
+Version:	0.10.10
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-# Source0-md5:	58407c7ee04df4043cadd9095d64da5d
+# Source0-md5:	57f475814cfbf9b2e6bf9e5202ec85fc
 Patch0:		link.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
@@ -26,10 +26,10 @@ BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.26.0
 BuildRequires:	gnome-panel-devel >= 3.0.0
+BuildRequires:	gobject-introspection-devel >= 0.9.5
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gstreamer-plugins-base-devel
-BuildRequires:	gobject-introspection-devel >= 0.9.5
 BuildRequires:	gtk+2-devel >= 2:2.18.0
 BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc >= 1.8
@@ -248,6 +248,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
+%{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-rss.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
@@ -293,6 +294,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so*
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so*
+%{_libdir}/girepository-1.0/Tracker-0.10.typelib
 %{_libdir}/girepository-1.0/TrackerExtract-0.10.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-0.10.typelib
 
@@ -332,6 +334,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gnome-applet-tracker
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libexecdir}/tracker-search-bar
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
 %{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
 %{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
 %{_mandir}/man1/tracker-search-bar.1*
