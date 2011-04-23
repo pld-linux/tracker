@@ -3,7 +3,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	0.10.10
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
@@ -221,6 +221,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-stats
 %attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
+%attr(755,root,root) %{_libdir}/tracker-miner-flickr
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
 %attr(755,root,root) %{_libdir}/tracker-miner-rss
 %attr(755,root,root) %{_libdir}/tracker-store
@@ -256,6 +257,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
 %{_datadir}/tracker
@@ -334,7 +336,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gnome-applet-tracker
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libexecdir}/tracker-search-bar
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
 %{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
 %{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
 %{_mandir}/man1/tracker-search-bar.1*
