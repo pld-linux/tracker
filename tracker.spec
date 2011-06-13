@@ -167,10 +167,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/*/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/push-modules/daemon/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/*/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-0.8/push-modules/daemon/*.la
 
 %find_lang tracker
 
@@ -281,9 +282,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libtracker-miner-0.8.so
 %attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-common.so
 %attr(755,root,root) %{_libdir}/tracker-0.8/libtracker-data.so
-%{_libdir}/libtracker-client-0.8.la
-%{_libdir}/libtracker-extract-0.8.la
-%{_libdir}/libtracker-miner-0.8.la
 %{_libdir}/tracker-0.8/libtracker-common.la
 %{_libdir}/tracker-0.8/libtracker-data.la
 %{_datadir}/vala/vapi/tracker-client-0.8.vapi
