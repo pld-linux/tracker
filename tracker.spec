@@ -2,12 +2,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.10.18
+Version:	0.10.19
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-# Source0-md5:	571b915d0173d9d5f2e3310ffd02e8e6
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.xz
+# Source0-md5:	2f8f27a7bb03cf4ce351f428623e8ccb
 Patch0:		link.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
@@ -56,10 +56,12 @@ BuildRequires:	rest-devel >= 0.6
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	sqlite3-devel >= 3.7.0
 BuildRequires:	taglib-devel >= 1.6
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	vala >= 0.12
 BuildRequires:	xine-lib-devel >= 1.0
+BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
