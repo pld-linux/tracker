@@ -7,7 +7,7 @@ Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
-# Source0-md5:	1e25d6d98d6862c15ec57b9e2ffaca6e
+# Source0-md5:	dae5add1b925c83ca5c5d2d1acfb8e4f
 Patch0:		link.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
