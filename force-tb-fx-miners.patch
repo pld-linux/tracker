@@ -1,0 +1,18 @@
+--- tracker-0.12.2/configure.ac.wiget	2011-09-22 17:57:13.000000000 +0200
++++ tracker-0.12.2/configure.ac	2011-09-22 19:59:26.862663064 +0200
+@@ -419,6 +419,7 @@ if test -n $THUNDERBIRD; then
+                       have_tracker_miner_thunderbird="no ")
+    AC_SUBST(THUNDERBIRD)
+ fi
++have_tracker_miner_thunderbird="yes"
+ 
+ # Check requirements for tracker-miner-firefox
+ TRACKER_MINER_FIREFOX_REQUIRED=4.0
+@@ -433,6 +434,7 @@ if test -n $FIREFOX; then
+                       have_tracker_miner_firefox="no ")
+    AC_SUBST(FIREFOX)
+ fi
++have_tracker_miner_firefox="yes"
+ 
+ # Check requirements for tracker-miner-rss
+ TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
