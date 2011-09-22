@@ -2,13 +2,14 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.12.1
+Version:	0.12.2
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
-# Source0-md5:	dae5add1b925c83ca5c5d2d1acfb8e4f
+# Source0-md5:	191b31eac7bd055f84e4d794ebdba6df
 Patch0:		link.patch
+Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -62,8 +63,8 @@ BuildRequires:	vala >= 1:0.14.0
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
-Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	glib2 >= 1:2.26.0
+Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	hicolor-icon-theme
 # for gunzip
@@ -160,9 +161,36 @@ Adds Tracker integration to Nautilus.
 %description -n nautilus-extension-tracker -l pl.UTF-8
 Dodaje integrację Trackera z Nautilusem.
 
+%package -n iceweasel-extension-tracker
+Summary:	Tracker extension for Iceweasel
+Summary(pl.UTF-8):	Rozszerzenie Trackera dla Iceweasel
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	iceweasel >= 4.0
+
+%description -n iceweasel-extension-tracker
+Adds Tracker integration to Iceweasel.
+
+%description -n iceweasel-extension-tracker -l pl.UTF-8
+Dodaje integrację Trackera z Iceweasel.
+
+%package -n icedove-extension-tracker
+Summary:	Tracker extension for Icedove
+Summary(pl.UTF-8):	Rozszerzenie Trackera dla Icedove
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	icedove >= 5.0
+
+%description -n icedove-extension-tracker
+Adds Tracker integration to Icedove.
+
+%description -n icedove-extension-tracker -l pl.UTF-8
+Dodaje integrację Trackera z Icedove.
+
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__intltoolize}
@@ -178,6 +206,10 @@ Dodaje integrację Trackera z Nautilusem.
 	--enable-miner-evolution \
 	--enable-gdkpixbuf \
 	--with-html-dir=%{_gtkdocdir} \
+	--enable-miner-firefox \
+	--with-firefox-plugin-dir=%{_datadir}/iceweasel/extensions \
+	--enable-miner-thunderbird \
+	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
 	--disable-unit-tests \
 	--disable-silent-rules \
 	--disable-hal
@@ -349,3 +381,14 @@ rm -rf $RPM_BUILD_ROOT
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
+
+%files -n iceweasel-extension-tracker
+%defattr(644,root,root,755)
+%{_datadir}/iceweasel/extensions/trackerfox@bustany.org
+%{_datadir}/xul-ext/trackerfox
+
+%files -n icedove-extension-tracker
+%defattr(644,root,root,755)
+%{_desktopdir}/trackerbird-launcher.desktop
+%{_datadir}/icedove/extensions/trackerbird@bustany.org
+%{_datadir}/xul-ext/trackerbird
