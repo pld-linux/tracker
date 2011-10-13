@@ -2,12 +2,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.12.3
+Version:	0.12.5
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
-# Source0-md5:	d794eca9dd1d957f7e2221520342de85
+# Source0-md5:	593bc9c954d4f917e118ad4c2601e891
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -35,6 +35,7 @@ BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc >= 1.8
 BuildRequires:	gupnp-dlna-devel >= 0.5
 BuildRequires:	intltool >= 0.40.0
+BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.3
 BuildRequires:	libgnome-keyring-devel >= 2.26.0
@@ -202,6 +203,7 @@ Dodaje integrację Trackera z Icedove.
 %configure \
 	--enable-libflac \
 	--enable-libvorbis \
+	--enable-libcue \
 	--enable-gtk-doc \
 	--enable-miner-evolution \
 	--enable-gdkpixbuf \
