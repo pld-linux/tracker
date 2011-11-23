@@ -1,17 +1,14 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.8.17
-Release:	4
+Version:	0.8.18
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
-# Source0-md5:	503117377b228e4575105c6b4ce34eaa
-Patch0:		%{name}-build.patch
-Patch1:		%{name}-poppler-0.16.patch
+# Source0-md5:	0b01201c7a4de15e6d8ef8137de7e41b
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	GConf2-devel >= 2.20.0
-BuildRequires:	UPower-devel
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
@@ -30,7 +27,6 @@ BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:	gtk+2-devel >= 2:2.16.0
 BuildRequires:	gtk-doc >= 1.8
-BuildRequires:	hal-devel >= 0.5.10
 BuildRequires:	id3lib-devel >= 3.8.3
 BuildRequires:	intltool >= 0.37.0
 BuildRequires:	libexif-devel >= 0.6.13
@@ -53,6 +49,7 @@ BuildRequires:	poppler-glib-devel >= 0.6
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	sqlite3-devel >= 3.6.16
 BuildRequires:	totem-pl-parser-devel
+BuildRequires:	upower-devel
 BuildRequires:	vala
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	zlib-devel
@@ -142,8 +139,6 @@ Dodaje integrację Trackera z Nautilusem.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__intltoolize}
