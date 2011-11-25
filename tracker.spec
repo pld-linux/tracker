@@ -2,12 +2,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.12.7
-Release:	3
+Version:	0.12.8
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
-# Source0-md5:	cbb6ebdcd87f6ff7ce63cc4e537eaabb
+# Source0-md5:	4259ddf9332b1419cbdad1f3e94ab8eb
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
