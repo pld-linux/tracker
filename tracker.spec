@@ -1,13 +1,13 @@
-%define		ver	0.12
+%define		ver	0.14
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.12.10
+Version:	0.14.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
-# Source0-md5:	1ca82c48e79002df9f3a5487d5979513
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
+# Source0-md5:	78f098425a66804053c33c7093001fdb
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -43,6 +43,7 @@ BuildRequires:	libgrss-devel >= 0.3
 BuildRequires:	libgsf-devel >= 1.14.7
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
+BuildRequires:	libosinfo-devel >= 0.0.2
 BuildRequires:	libpng-devel >= 2:1.2.24
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
@@ -224,7 +225,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/3.2/plugins/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -272,6 +273,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gstreamer.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-html.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-icon.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-iso.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-jpeg.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-mp3.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-msoffice.so
@@ -371,8 +373,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/evolution/3.2/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
-%{_libdir}/evolution/3.2/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
+%attr(755,root,root) %{_libdir}/evolution/3.4/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
+%{_libdir}/evolution/3.4/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files -n gnome-applet-tracker
 %defattr(644,root,root,755)
