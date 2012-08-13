@@ -1,15 +1,21 @@
+#
+# Conditional build:
+%bcond_without	apidocs		# do not build and package API docs
+%bcond_without	vala		# do not build Vala API
+#
 %define		ver	0.14
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.14.1
+Version:	0.14.2
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
-# Source0-md5:	35cbd8e791bbc809b42f54948c602c43
+# Source0-md5:	f3a871beeebf86fd752863ebd22af9ac
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
+Patch2:		libgrss-0.5.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -32,14 +38,14 @@ BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.31
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10.31
 BuildRequires:	gtk+3-devel
-BuildRequires:	gtk-doc >= 1.8
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.8}
 BuildRequires:	gupnp-dlna-devel >= 0.5
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.3
 BuildRequires:	libgnome-keyring-devel >= 2.26.0
-BuildRequires:	libgrss-devel >= 0.3
+BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.7
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
@@ -61,7 +67,7 @@ BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
-BuildRequires:	vala >= 1:0.14.0
+%{?with_vala:BuildRequires:	vala >= 1:0.14.0}
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -189,10 +195,23 @@ Adds Tracker integration to Icedove.
 %description -n icedove-extension-tracker -l pl.UTF-8
 Dodaje integrację Trackera z Icedove.
 
+%package -n vala-tracker
+Summary:	tracker API for Vala language
+Summary(pl.UTF-8):	API tracker dla języka Vala
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description -n vala-tracker
+tracker API for Vala language.
+
+%description -n vala-tracker -l pl.UTF-8
+API tracker dla języka Vala.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__intltoolize}
@@ -205,7 +224,7 @@ Dodaje integrację Trackera z Icedove.
 	--enable-libflac \
 	--enable-libvorbis \
 	--enable-libcue \
-	--enable-gtk-doc \
+	%{__enable_disable apidocs gtk-doc} \
 	--enable-miner-evolution \
 	--enable-gdkpixbuf \
 	--with-html-dir=%{_gtkdocdir} \
@@ -352,10 +371,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so
-%{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
-%{_datadir}/vala/vapi/tracker-sparql-%{ver}.vapi
-%{_datadir}/vala/vapi/tracker-miner-%{ver}.deps
-%{_datadir}/vala/vapi/tracker-sparql-%{ver}.deps
 %{_includedir}/tracker-%{ver}
 %{_pkgconfigdir}/tracker-extract-%{ver}.pc
 %{_pkgconfigdir}/tracker-miner-%{ver}.pc
@@ -364,12 +379,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gir-1.0/TrackerExtract-%{ver}.gir
 %{_datadir}/gir-1.0/TrackerMiner-%{ver}.gir
 
+%if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/libtracker-extract
 %{_gtkdocdir}/libtracker-miner
 %{_gtkdocdir}/libtracker-sparql
 %{_gtkdocdir}/ontology
+%endif
 
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)
@@ -397,3 +414,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/trackerbird-launcher.desktop
 %{_datadir}/icedove/extensions/trackerbird@bustany.org
 %{_datadir}/xul-ext/trackerbird
+
+%if %{with vala}
+%files -n vala-tracker
+%defattr(644,root,root,755)
+%{_datadir}/vala/vapi/tracker-miner-%{ver}.deps
+%{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
+%{_datadir}/vala/vapi/tracker-sparql-%{ver}.deps
+%{_datadir}/vala/vapi/tracker-sparql-%{ver}.vapi
+%endif
