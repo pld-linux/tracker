@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
+%bcond_with	evolution	# build with Evolution miner
 %bcond_without	vala		# do not build Vala API
 #
 %define		ver	0.14
@@ -8,7 +9,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	0.14.2
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
@@ -25,8 +26,10 @@ BuildRequires:	dbus-glib-devel >= 0.82
 BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
+%if %{with evolution}
 BuildRequires:	evolution-data-server-devel >= 3.1.0
 BuildRequires:	evolution-devel >= 3.1.0
+%endif
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
@@ -225,7 +228,7 @@ API tracker dla języka Vala.
 	--enable-libvorbis \
 	--enable-libcue \
 	%{__enable_disable apidocs gtk-doc} \
-	--enable-miner-evolution \
+	%{__enable_disable evolution miner-evolution} \
 	--enable-gdkpixbuf \
 	--with-html-dir=%{_gtkdocdir} \
 	--enable-miner-firefox \
@@ -244,7 +247,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la
+%{?with evolution:%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
@@ -315,7 +318,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
@@ -388,10 +390,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_gtkdocdir}/ontology
 %endif
 
+%if %{with evolution}
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/evolution/3.4/plugins/liborg-freedesktop-Tracker-evolution-plugin.so
 %{_libdir}/evolution/3.4/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
+%endif
 
 %files -n gnome-applet-tracker
 %defattr(644,root,root,755)
