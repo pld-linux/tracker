@@ -8,12 +8,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.14.2
-Release:	2
+Version:	0.14.4
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
-# Source0-md5:	f3a871beeebf86fd752863ebd22af9ac
+# Source0-md5:	9eb11a79ec2320e90af72b693c39dbc7
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 Patch2:		libgrss-0.5.patch
@@ -289,6 +289,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-writeback
 %dir %{_libdir}/tracker-%{ver}/extract-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-abw.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-dvi.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-epub.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-flac.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gif.so
@@ -309,6 +310,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-vorbis.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-msoffice-xml.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-xmp.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-xps.so
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
