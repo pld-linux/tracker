@@ -50,6 +50,7 @@ BuildRequires:	libgee-devel >= 0.3
 BuildRequires:	libgnome-keyring-devel >= 2.26.0
 BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.7
+BuildRequires:	libgxps-devel
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libosinfo-devel >= 0.0.2
