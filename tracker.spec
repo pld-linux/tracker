@@ -8,12 +8,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.14.4
+Version:	0.14.5
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
-# Source0-md5:	9eb11a79ec2320e90af72b693c39dbc7
+# Source0-md5:	44eacb1b05eb1321962aefe27f60e53e
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 Patch2:		libgrss-0.5.patch
@@ -23,7 +23,6 @@ BuildRequires:	autoconf >= 2.64
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	dbus-devel >= 1.3.1
 BuildRequires:	dbus-glib-devel >= 0.82
-BuildRequires:	dia
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
 %if %{with evolution}
@@ -46,7 +45,7 @@ BuildRequires:	gupnp-dlna-devel >= 0.5
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
-BuildRequires:	libgee-devel >= 0.3
+BuildRequires:	libgee-devel >= 0.8
 BuildRequires:	libgnome-keyring-devel >= 2.26.0
 BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.7
