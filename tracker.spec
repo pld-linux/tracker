@@ -4,19 +4,18 @@
 %bcond_with	evolution	# build with Evolution miner
 %bcond_without	vala		# do not build Vala API
 #
-%define		ver	0.14
+%define		ver	0.16
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.14.5
+Version:	0.16.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
-# Source0-md5:	44eacb1b05eb1321962aefe27f60e53e
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.16/%{name}-%{version}.tar.xz
+# Source0-md5:	3f68c0141ed0442ba2977583981972c0
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
-Patch2:		libgrss-0.5.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -33,15 +32,14 @@ BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
-BuildRequires:	glib2-devel >= 1:2.28.0
-BuildRequires:	gnome-panel-devel >= 3.0.0
+BuildRequires:	glib2-devel >= 1:2.36.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 0.10.31
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10.31
 BuildRequires:	gtk+3-devel
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.8}
-BuildRequires:	gupnp-dlna-devel >= 0.5
+BuildRequires:	gupnp-dlna-devel >= 0.9.4
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
@@ -65,7 +63,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rest-devel >= 0.7
 BuildRequires:	rpmbuild(macros) >= 1.592
-BuildRequires:	sqlite3-devel >= 3.7.0
+BuildRequires:	sqlite3-devel >= 3.7.9
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
@@ -74,13 +72,14 @@ BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
-Requires(post,postun):	glib2 >= 1:2.26.0
+Requires(post,postun):	glib2 >= 1:2.36.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	hicolor-icon-theme
 # for gunzip
 Suggests:	gzip
 Obsoletes:	gnome-applet-deskbar-extension-tracker
+Obsoletes:	gnome-applet-tracker
 Obsoletes:	tracker-search-gui
 Obsoletes:	tracker-startup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -109,7 +108,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.28.0
+Requires:	glib2-devel >= 1:2.36.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
@@ -145,19 +144,6 @@ Tracker plugin for Evolution.
 
 %description -n evolution-plugin-tracker -l pl.UTF-8
 Wtyczka Trackera do Evolution.
-
-%package -n gnome-applet-tracker
-Summary:	Search applet for GNOME panel
-Summary(pl.UTF-8):	Aplet wyszukiwania dla panelu GNOME
-Group:		X11/Applications
-Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-panel >= 3.0.0
-
-%description -n gnome-applet-tracker
-Search applet for GNOME panel.
-
-%description -n gnome-applet-tracker -l pl.UTF-8
-Aplet wyszukiwania dla panelu GNOME.
 
 %package -n nautilus-extension-tracker
 Summary:	Tracker extension for Nautilus
@@ -214,7 +200,6 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__intltoolize}
@@ -272,7 +257,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -f tracker.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tracker-control
-%attr(755,root,root) %{_bindir}/tracker-explorer
 %attr(755,root,root) %{_bindir}/tracker-import
 %attr(755,root,root) %{_bindir}/tracker-info
 %attr(755,root,root) %{_bindir}/tracker-needle
@@ -282,7 +266,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-stats
 %attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
-%attr(755,root,root) %{_libdir}/tracker-miner-flickr
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
 %attr(755,root,root) %{_libdir}/tracker-miner-rss
 %attr(755,root,root) %{_libdir}/tracker-store
@@ -314,14 +297,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
-%{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-rss.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
@@ -399,13 +380,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/evolution/3.4/plugins/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
 %endif
-
-%files -n gnome-applet-tracker
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libexecdir}/tracker-search-bar
-%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
-%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
-%{_mandir}/man1/tracker-search-bar.1*
 
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
