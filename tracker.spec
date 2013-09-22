@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
 %bcond_with	evolution	# build with Evolution miner
+%bcond_without	nautilus	# build with Evolution miner
 %bcond_without	vala		# do not build Vala API
 #
 %define		ver	0.16
@@ -21,7 +22,6 @@ BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	dbus-devel >= 1.3.1
-BuildRequires:	dbus-glib-devel >= 0.82
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
 %if %{with evolution}
@@ -30,21 +30,21 @@ BuildRequires:	evolution-devel >= 3.1.0
 %endif
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
+BuildRequires:	gdk-pixbuf2-devel >= 2.12.0
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.36.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
-BuildRequires:	gstreamer-devel >= 0.10.31
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.31
-BuildRequires:	gtk+3-devel
+BuildRequires:	gstreamer-devel >= 1.0
+BuildRequires:	gstreamer-plugins-base-devel >= 1.0
+BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.8}
 BuildRequires:	gupnp-dlna-devel >= 0.9.4
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.8
-BuildRequires:	libgnome-keyring-devel >= 2.26.0
 BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.7
 BuildRequires:	libgxps-devel
@@ -52,15 +52,17 @@ BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libosinfo-devel >= 0.0.2
 BuildRequires:	libpng-devel >= 2:1.2.24
+BuildRequires:	libsecret-devel >= 0.5
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	libunistring-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel >= 0.22
 BuildRequires:	libxml2-devel >= 1:2.6.31
-BuildRequires:	nautilus-devel >= 3.0.0
+%{?with_nautilus:BuildRequires:	nautilus-devel >= 3.0.0}
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
+BuildRequires:	python >= 1:2.6
 BuildRequires:	rest-devel >= 0.7
 BuildRequires:	rpmbuild(macros) >= 1.592
 BuildRequires:	sqlite3-devel >= 3.7.9
@@ -69,13 +71,28 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
 %{?with_vala:BuildRequires:	vala >= 1:0.14.0}
-BuildRequires:	xine-lib-devel >= 1.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
+# meegotouch >= 0.20, libstreamanalyzer >= 0.7.0
 Requires(post,postun):	glib2 >= 1:2.36.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	dbus >= 1.3.1
+Requires:	flac >= 1.2.1
+Requires:	gdk-pixbuf2 >= 2.12.0
+Requires:	gupnp-dlna >= 0.9.4
 Requires:	hicolor-icon-theme
+Requires:	libgrss >= 0.5
+Requires:	libgsf >= 1.14.7
+Requires:	libosinfo >= 0.0.2
+Requires:	libpng >= 2:1.2.24
+Requires:	libvorbis >= 0.22
+Requires:	libxml2 >= 1:2.6.31
+Requires:	poppler-glib >= 0.16.0
+Requires:	rest >= 0.7
+Requires:	taglib >= 1.6
+Requires:	totem-pl-parser >= 2.32.2-2
+Requires:	upower-libs >= 0.9.0
 # for gunzip
 Suggests:	gzip
 Obsoletes:	gnome-applet-deskbar-extension-tracker
@@ -92,8 +109,15 @@ Tracker jest podsystemem indeksującym i wyszukującym.
 
 %package libs
 Summary:	Tracker libraries
-Summary(pl.UTF-8):	Bibliotek Trackera
+Summary(pl.UTF-8):	Biblioteki Trackera
 Group:		Libraries
+Requires:	NetworkManager-libs >= 0.8.0
+Requires:	enca-libs >= 1.9
+Requires:	exempi >= 2.1.0
+Requires:	glib2 >= 1:2.36.0
+Requires:	libexif >= 0.6.13
+Requires:	libsecret >= 0.5
+Requires:	sqlite3 >= 3.7.9
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
 
@@ -138,6 +162,7 @@ Summary(pl.UTF-8):	Wtyczka Trackera do Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	evolution >= 3.1.0
+Requires:	evolution-data-server-devel >= 3.1.0
 
 %description -n evolution-plugin-tracker
 Tracker plugin for Evolution.
@@ -153,10 +178,10 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	nautilus >= 3.0.0
 
 %description -n nautilus-extension-tracker
-Adds Tracker integration to Nautilus.
+This package adds Tracker integration to Nautilus.
 
 %description -n nautilus-extension-tracker -l pl.UTF-8
-Dodaje integrację Trackera z Nautilusem.
+Ten pakiet dodaje integrację Trackera z Nautilusem.
 
 %package -n iceweasel-extension-tracker
 Summary:	Tracker extension for Iceweasel
@@ -166,10 +191,10 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	iceweasel >= 22.0
 
 %description -n iceweasel-extension-tracker
-Adds Tracker integration to Iceweasel.
+This package adds Tracker integration to Iceweasel.
 
 %description -n iceweasel-extension-tracker -l pl.UTF-8
-Dodaje integrację Trackera z Iceweasel.
+Ten pakiet dodaje integrację Trackera z Iceweaselem.
 
 %package -n icedove-extension-tracker
 Summary:	Tracker extension for Icedove
@@ -179,16 +204,17 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	icedove >= 5.0
 
 %description -n icedove-extension-tracker
-Adds Tracker integration to Icedove.
+This package adds Tracker integration to Icedove.
 
 %description -n icedove-extension-tracker -l pl.UTF-8
-Dodaje integrację Trackera z Icedove.
+Ten pakiet dodaje integrację Trackera z programem Icedove.
 
 %package -n vala-tracker
 Summary:	tracker API for Vala language
 Summary(pl.UTF-8):	API tracker dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
+Requires:	vala >= 1:0.14.0
 
 %description -n vala-tracker
 tracker API for Vala language.
@@ -209,20 +235,22 @@ API tracker dla języka Vala.
 %{__autoheader}
 %{__automake}
 %configure \
-	--enable-libflac \
-	--enable-libvorbis \
-	--enable-libcue \
-	%{__enable_disable apidocs gtk-doc} \
-	%{__enable_disable evolution miner-evolution} \
-	--enable-gdkpixbuf \
-	--with-html-dir=%{_gtkdocdir} \
-	--enable-miner-firefox \
-	--with-firefox-plugin-dir=%{_libdir}/iceweasel/browser/extensions \
-	--enable-miner-thunderbird \
-	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
+	--disable-hal \
 	--disable-unit-tests \
 	--disable-silent-rules \
-	--disable-hal
+	--enable-gdkpixbuf \
+	%{__enable_disable apidocs gtk-doc} \
+	--enable-libcue \
+	--enable-libflac \
+	--enable-libvorbis \
+	%{__enable_disable evolution miner-evolution} \
+	--enable-miner-firefox \
+	--enable-miner-thunderbird \
+	%{__enable_disable nautilus nautilus-extension} \
+	--with-firefox-plugin-dir=%{_libdir}/iceweasel/browser/extensions \
+	--with-html-dir=%{_gtkdocdir} \
+	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
+	--with-unicode-support=libunistring
 
 %{__make}
 
@@ -232,11 +260,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{?with evolution:%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-*/*.la
+%{?with_evolution:%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la}
+%{?with_nautilus:%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-*/*.la}
 
 %find_lang tracker
 
@@ -318,8 +346,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/xul-ext
 %{_desktopdir}/tracker-needle.desktop
 %{_desktopdir}/tracker-preferences.desktop
-%{_iconsdir}/hicolor/*/*/*.png
-%{_iconsdir}/hicolor/*/*/*.svg
+%{_iconsdir}/hicolor/*/apps/tracker.png
+%{_iconsdir}/hicolor/*/apps/tracker.svg
 %{_mandir}/man1/tracker-control.1*
 %{_mandir}/man1/tracker-extract.1*
 %{_mandir}/man1/tracker-import.1*
@@ -381,9 +409,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.EMails.service
 %endif
 
+%if %{with nautilus}
 %files -n nautilus-extension-tracker
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
+%endif
 
 %files -n iceweasel-extension-tracker
 %defattr(644,root,root,755)
