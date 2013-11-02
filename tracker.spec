@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
 %bcond_with	evolution	# build with Evolution miner
+%bcond_with	icu		# libicu instead of libunistring
 %bcond_without	nautilus	# build with Evolution miner
 %bcond_without	vala		# do not build Vala API
 #
@@ -48,7 +49,7 @@ BuildRequires:	libgee-devel >= 0.8
 BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.24
 BuildRequires:	libgxps-devel
-BuildRequires:	libicu-devel
+%{?with_icu:BuildRequires:	libicu-devel}
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libosinfo-devel >= 0.0.2
@@ -56,7 +57,7 @@ BuildRequires:	libpng-devel >= 2:1.2.24
 BuildRequires:	libsecret-devel >= 0.5
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
-BuildRequires:	libunistring-devel
+%{!?with_icu:BuildRequires:	libunistring-devel}
 BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel >= 0.22
 BuildRequires:	libxml2-devel >= 1:2.6.31
@@ -84,7 +85,7 @@ Requires:	gdk-pixbuf2 >= 2.12.0
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	hicolor-icon-theme
 Requires:	libgrss >= 0.5
-Requires:	libgsf >= 1.14.7
+Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.0.2
 Requires:	libpng >= 2:1.2.24
 Requires:	libvorbis >= 0.22
@@ -251,7 +252,7 @@ API tracker dla języka Vala.
 	--with-firefox-plugin-dir=%{_libdir}/iceweasel/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
-	--with-unicode-support=libunistring
+	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
 
 %{__make}
 
