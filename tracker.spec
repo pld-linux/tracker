@@ -6,16 +6,16 @@
 %bcond_without	nautilus	# build with Evolution miner
 %bcond_without	vala		# do not build Vala API
 #
-%define		ver	0.16
+%define		ver	1.0
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	0.16.4
+Version:	1.0.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.16/%{name}-%{version}.tar.xz
-# Source0-md5:	a2debc6b80ea4134306ce395922413a7
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.0/%{name}-%{version}.tar.xz
+# Source0-md5:	a234c5a6d3a22120a1eeaef0c71a57fb
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -31,10 +31,9 @@ BuildRequires:	evolution-devel >= 3.1.0
 %endif
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	flac-devel >= 1.2.1
-BuildRequires:	gdk-pixbuf2-devel >= 2.12.0
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
-BuildRequires:	glib2-devel >= 1:2.36.0
+BuildRequires:	glib2-devel >= 1:2.38.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 1.0
@@ -52,9 +51,9 @@ BuildRequires:	libgxps-devel
 %{?with_icu:BuildRequires:	libicu-devel}
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libosinfo-devel >= 0.0.2
+BuildRequires:	libmediaart-devel >= 0.1.0
+BuildRequires:	libosinfo-devel >= 0.2.9
 BuildRequires:	libpng-devel >= 2:1.2.24
-BuildRequires:	libsecret-devel >= 0.5
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
 %{!?with_icu:BuildRequires:	libunistring-devel}
@@ -65,7 +64,6 @@ BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	python >= 1:2.6
-BuildRequires:	rest-devel >= 0.7
 BuildRequires:	rpmbuild(macros) >= 1.592
 BuildRequires:	sqlite3-devel >= 3.7.9
 BuildRequires:	taglib-devel >= 1.6
@@ -81,17 +79,15 @@ Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
 Requires:	flac >= 1.2.1
-Requires:	gdk-pixbuf2 >= 2.12.0
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	hicolor-icon-theme
 Requires:	libgrss >= 0.5
 Requires:	libgsf >= 1.14.24
-Requires:	libosinfo >= 0.0.2
+Requires:	libosinfo >= 0.2.9
 Requires:	libpng >= 2:1.2.24
 Requires:	libvorbis >= 0.22
 Requires:	libxml2 >= 1:2.6.31
 Requires:	poppler-glib >= 0.16.0
-Requires:	rest >= 0.7
 Requires:	taglib >= 1.6
 Requires:	totem-pl-parser >= 2.32.2-2
 Requires:	upower-libs >= 0.9.0
@@ -116,9 +112,8 @@ Group:		Libraries
 Requires:	NetworkManager-libs >= 0.8.0
 Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
-Requires:	glib2 >= 1:2.36.0
+Requires:	glib2 >= 1:2.38.0
 Requires:	libexif >= 0.6.13
-Requires:	libsecret >= 0.5
 Requires:	sqlite3 >= 3.7.9
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
@@ -134,7 +129,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.36.0
+Requires:	glib2-devel >= 1:2.38.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
@@ -240,7 +235,6 @@ API tracker dla języka Vala.
 	--disable-hal \
 	--disable-unit-tests \
 	--disable-silent-rules \
-	--enable-gdkpixbuf \
 	%{__enable_disable apidocs gtk-doc} \
 	--enable-libcue \
 	--enable-libflac \
@@ -327,10 +321,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/tracker-%{ver}/writeback-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
+%{_sysconfdir}/xdg/autostart/tracker-extract.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-rss.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Extract.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
@@ -367,37 +362,38 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-extract-%{ver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-control-%{ver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-control-%{ver}.so.0
 %attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{ver}.so.0
 %attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{ver}.so.0
-# required by libtracker-extract and libtracker-miner
+# required by libtracker-miner
 %dir %{_libdir}/tracker-%{ver}
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so*
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so*
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-extract.so*
 %{_libdir}/girepository-1.0/Tracker-%{ver}.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-%{ver}.typelib
+%{_libdir}/girepository-1.0/TrackerControl-%{ver}.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-%{ver}.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-extract-%{ver}.so
+%attr(755,root,root) %{_libdir}/libtracker-control-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so
 %attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so
 %{_includedir}/tracker-%{ver}
-%{_pkgconfigdir}/tracker-extract-%{ver}.pc
+%{_pkgconfigdir}/tracker-control-%{ver}.pc
 %{_pkgconfigdir}/tracker-miner-%{ver}.pc
 %{_pkgconfigdir}/tracker-sparql-%{ver}.pc
 %{_datadir}/gir-1.0/Tracker-%{ver}.gir
-%{_datadir}/gir-1.0/TrackerExtract-%{ver}.gir
+%{_datadir}/gir-1.0/TrackerControl-%{ver}.gir
 %{_datadir}/gir-1.0/TrackerMiner-%{ver}.gir
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/libtracker-extract
+%{_gtkdocdir}/libtracker-control
 %{_gtkdocdir}/libtracker-miner
 %{_gtkdocdir}/libtracker-sparql
 %{_gtkdocdir}/ontology
@@ -431,6 +427,8 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with vala}
 %files -n vala-tracker
 %defattr(644,root,root,755)
+%{_datadir}/vala/vapi/tracker-control-%{ver}.deps
+%{_datadir}/vala/vapi/tracker-control-%{ver}.vapi
 %{_datadir}/vala/vapi/tracker-miner-%{ver}.deps
 %{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
 %{_datadir}/vala/vapi/tracker-sparql-%{ver}.deps
