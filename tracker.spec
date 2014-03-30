@@ -48,7 +48,7 @@ BuildRequires:	libgee-devel >= 0.8
 BuildRequires:	libgrss-devel >= 0.5
 BuildRequires:	libgsf-devel >= 1.14.24
 BuildRequires:	libgxps-devel
-%{?with_icu:BuildRequires:	libicu-devel}
+%{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmediaart-devel >= 0.1.0
@@ -70,11 +70,11 @@ BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
-%{?with_vala:BuildRequires:	vala >= 1:0.14.0}
+%{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 # meegotouch >= 0.20, libstreamanalyzer >= 0.7.0
-Requires(post,postun):	glib2 >= 1:2.36.0
+Requires(post,postun):	glib2 >= 1:2.38.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
@@ -211,7 +211,7 @@ Summary:	tracker API for Vala language
 Summary(pl.UTF-8):	API tracker dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Requires:	vala >= 1:0.14.0
+Requires:	vala >= 2:0.18.0
 
 %description -n vala-tracker
 tracker API for Vala language.
