@@ -11,7 +11,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.0.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.0/%{name}-%{version}.tar.xz
@@ -243,7 +243,7 @@ API tracker dla języka Vala.
 	--enable-miner-firefox \
 	--enable-miner-thunderbird \
 	%{__enable_disable nautilus nautilus-extension} \
-	--with-firefox-plugin-dir=%{_libdir}/iceweasel/browser/extensions \
+	--with-firefox-plugin-dir=%{_datadir}/iceweasel/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
 	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
@@ -415,7 +415,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n iceweasel-extension-tracker
 %defattr(644,root,root,755)
-%{_libdir}/iceweasel/browser/extensions/trackerfox@bustany.org
+%{_datadir}/iceweasel/browser/extensions/trackerfox@bustany.org
 %{_datadir}/xul-ext/trackerfox
 
 %files -n icedove-extension-tracker
