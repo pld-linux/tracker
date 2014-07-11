@@ -18,6 +18,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.0/%{name}-%{version}.t
 # Source0-md5:	649f7e3d2c4c9dc01dfa51e131010ba3
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
+Patch2:		%{name}-giflib.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -223,6 +224,7 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__intltoolize}
