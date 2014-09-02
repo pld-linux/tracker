@@ -1,0 +1,596 @@
+ configure.ac                                    |   10 +++-
+ src/libtracker-extract/tracker-extract-info.c   |   56 +++++++++++++++++
+ src/libtracker-extract/tracker-extract-info.h   |   12 ++++
+ src/tracker-extract/tracker-extract.c           |   41 ++++++++++++
+ src/tracker-extract/tracker-extract.h           |    5 ++
+ src/tracker-extract/tracker-main.c              |   21 ------
+ 10 files changed, 255 insertions(+), 71 deletions(-)
+---
+diff --git a/configure.ac b/configure.ac
+index 3fb59e6..709ef32 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -229,7 +229,7 @@ NETWORK_MANAGER_REQUIRED=0.8
+ GSTREAMER_REQUIRED=0.10.31
+ GUPNP_DLNA_REQUIRED=0.9.4
+ LIBPNG_REQUIRED=0.89
+-LIBMEDIAART_REQUIRED=0.1.0
++LIBMEDIAART_REQUIRED=0.5.0
+ 
+ # 3.6.11 for sqlite_backup API
+ # 3.6.16 to fix test failures
+@@ -1070,9 +1070,15 @@ if test "x$enable_libmediaart" != "xno" ; then
+    LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $LIBMEDIAART_CFLAGS"
+    LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $LIBMEDIAART_LIBS"
+ 
++   LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $LIBMEDIAART_CFLAGS"
++   LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $LIBMEDIAART_LIBS"
++
+    TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $LIBMEDIAART_CFLAGS"
+    TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $LIBMEDIAART_LIBS"
+ 
++   TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $LIBMEDIAART_CFLAGS"
++   TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $LIBMEDIAART_LIBS"
++
+    # Used for .pc file...
+    LIBTRACKER_MINER_PC_REQUIRES="libmediaart-1.0"
+    AC_SUBST(LIBTRACKER_MINER_PC_REQUIRES)
+@@ -1755,7 +1761,7 @@ PKG_CHECK_MODULES(AVCODEC,
+ AC_SUBST(AVCODEC_CFLAGS)
+ AC_SUBST(AVCODEC_LIBS)
+ 
+-PKG_CHECK_MODULES(AVCODEC,
++PKG_CHECK_MODULES(AVUTIL,
+                   [libavutil >= 0.8.4],
+                   [have_libavutil=yes],
+                   [have_libavutil=no])
+diff --git a/src/libtracker-extract/tracker-extract-info.c b/src/libtracker-extract/tracker-extract-info.c
+index a624301..63d77c6 100644
+--- a/src/libtracker-extract/tracker-extract-info.c
++++ b/src/libtracker-extract/tracker-extract-info.c
+@@ -19,6 +19,8 @@
+  * Author: Carlos Garnacho <carlos lanedo com>
+  */
+ 
++#include "config.h"
++
+ #include "tracker-extract-info.h"
+ 
+ /**
+@@ -46,6 +46,10 @@ struct _TrackerExtractInfo
+ 	gchar *mimetype;
+ 	gchar *graph;
+ 
++#ifdef HAVE_LIBMEDIAART
++	MediaArtProcess *media_art_process;
++#endif
++
+ 	gint ref_count;
+ };
+ 
+@@ -84,6 +88,10 @@ tracker_extract_info_new (GFile       *f
+ 
+         info->where_clause = NULL;
+ 
++#ifdef HAVE_LIBMEDIAART
++	info->media_art_process = NULL;
++#endif
++
+ 	info->ref_count = 1;
+ 
+ 	return info;
+@@ -294,3 +304,49 @@ tracker_extract_info_set_where_clause (TrackerExtractInfo *info,
+        g_free (info->where_clause);
+        info->where_clause = g_strdup (where);
+ }
++
++#ifdef HAVE_LIBMEDIAART
++
++/**
++ * tracker_extract_info_get_media_art_process:
++ * @info: a #TrackerExtractInfo
++ *
++ * Returns the #MediaArtProcess object that can be used to retrieve
++ * and store media art caches found in extracted content.
++ *
++ * Returns: (transfer none): The #MediaArtProcess. This object should
++ * not be unreferenced.
++ *
++ * Since: 1.2
++ **/
++MediaArtProcess *
++tracker_extract_info_get_media_art_process (TrackerExtractInfo *info)
++{
++	g_return_if_fail (info != NULL);
++	return info->media_art_process;
++}
++
++/**
++ * tracker_extract_info_set_media_art_process:
++ * @info: a #TrackerExtractInfo
++ * @media_art_process: a #MediaArtProcess.
++ *
++ * Use @media_art_process for caching and looking up media art.
++ *
++ * Since: 1.2
++ **/
++void
++tracker_extract_info_set_media_art_process (TrackerExtractInfo *info,
++                                            MediaArtProcess    *media_art_process)
++{
++	g_return_if_fail (info != NULL);
++	g_return_if_fail (MEDIA_ART_IS_PROCESS (media_art_process));
++
++	if (info->media_art_process) {
++	        g_object_unref (info->media_art_process);
++	}
++
++	info->media_art_process = g_object_ref (media_art_process);
++}
++
++#endif /* HAVE_LIBMEDIAART */
+diff --git a/src/libtracker-extract/tracker-extract-info.h b/src/libtracker-extract/tracker-extract-info.h
+index f54b113..ffd1bce 100644
+--- a/src/libtracker-extract/tracker-extract-info.h
++++ b/src/libtracker-extract/tracker-extract-info.h
+@@ -29,6 +29,10 @@
+ #include <libtracker-sparql/tracker-sparql.h>
+ #include <gio/gio.h>
+ 
++#ifdef HAVE_LIBMEDIAART
++#include <libmediaart/mediaart.h>
++#endif
++
+ G_BEGIN_DECLS
+ 
+ typedef struct _TrackerExtractInfo TrackerExtractInfo;
+@@ -50,6 +54,14 @@ const gchar *         tracker_extract_info_get_where_clause       (TrackerExtrac
+ void                  tracker_extract_info_set_where_clause       (TrackerExtractInfo *info,
+                                                                    const gchar        *where);
+ 
++#ifdef HAVE_LIBMEDIAART
++
++MediaArtProcess *     tracker_extract_info_get_media_art_process  (TrackerExtractInfo *info);
++void                  tracker_extract_info_set_media_art_process  (TrackerExtractInfo *info,
++                                                                   MediaArtProcess    *media_art_process);
++
++#endif /* HAVE_LIBMEDIAART */
++
+ G_END_DECLS
+ 
+ #endif /* __LIBTRACKER_EXTRACT_INFO_H__ */
+diff --git a/src/tracker-extract/tracker-extract.c b/src/tracker-extract/tracker-extract.c
+index 5b3eca9..b5c60af 100644
+--- a/src/tracker-extract/tracker-extract.c
++++ b/src/tracker-extract/tracker-extract.c
+@@ -73,6 +73,10 @@ typedef struct {
+ 	gchar *force_module;
+ 
+ 	gint unhandled_count;
++
++#ifdef HAVE_LIBMEDIAART
++	MediaArtProcess *media_art_process;
++#endif
+ } TrackerExtractPrivate;
+ 
+ typedef struct {
+@@ -131,6 +135,17 @@ tracker_extract_init (TrackerExtract *ob
+ 	priv->thread_pool = g_thread_pool_new ((GFunc) get_metadata,
+ 	                                       NULL, 10, TRUE, NULL);
+ 
++#ifdef HAVE_LIBMEDIAART
++	GError *error = NULL;
++
++	priv->media_art_process = media_art_process_new (&error);
++	if (!priv->media_art_process || error) {
++		g_warning ("Could not initialize media art, %s",
++		           error ? error->message : _("No error given"));
++		g_error_free (error);
++	}
++#endif
++
+ 	g_mutex_init (&priv->task_mutex);
+ }
+ 
+@@ -152,6 +167,12 @@ tracker_extract_finalize (GObject *objec
+ 
+ 	g_hash_table_destroy (priv->statistics_data);
+ 
++#ifdef HAVE_LIBMEDIAART
++	if (priv->media_art_process) {
++		g_object_unref (priv->media_art_process);
++	}
++#endif
++
+ 	g_mutex_clear (&priv->task_mutex);
+ 
+ 	G_OBJECT_CLASS (tracker_extract_parent_class)->finalize (object);
+@@ -280,6 +301,10 @@ get_file_metadata (TrackerExtractTask  *
+ 	info = tracker_extract_info_new (file, task->mimetype, task->graph);
+ 	g_object_unref (file);
+ 
++#ifdef HAVE_LIBMEDIAART
++	tracker_extract_info_set_media_art_process (info, tracker_extract_get_media_art_process (task->extract));
++#endif
++
+ 	if (task->mimetype && *task->mimetype) {
+ 		/* We know the mime */
+ 		mime_used = g_strdup (task->mimetype);
+@@ -720,6 +745,22 @@ tracker_extract_file (TrackerExtract
+ 	g_object_unref (res);
+ }
+ 
++#ifdef HAVE_LIBMEDIAART
++
++MediaArtProcess *
++tracker_extract_get_media_art_process (TrackerExtract *extract)
++{
++       TrackerExtractPrivate *priv;
++
++       g_return_val_if_fail (TRACKER_IS_EXTRACT (extract), NULL);
++
++       priv = TRACKER_EXTRACT_GET_PRIVATE (extract);
++
++       return priv->media_art_process;
++}
++
++#endif
++
+ void
+ tracker_extract_get_metadata_by_cmdline (TrackerExtract *object,
+                                          const gchar    *uri,
+diff --git a/src/tracker-extract/tracker-extract.h b/src/tracker-extract/tracker-extract.h
+index 1d250d9..0679e99 100644
+--- a/src/tracker-extract/tracker-extract.h
++++ b/src/tracker-extract/tracker-extract.h
+@@ -60,6 +60,11 @@ void            tracker_extract_file                    (TrackerExtract
+                                                          GAsyncReadyCallback     cb,
+                                                          gpointer                user_data);
+ 
++#ifdef HAVE_LIBMEDIAART
++MediaArtProcess *
++                tracker_extract_get_media_art_process   (TrackerExtract         *extract);
++#endif
++
+ void            tracker_extract_dbus_start              (TrackerExtract         *extract);
+ void            tracker_extract_dbus_stop               (TrackerExtract         *extract);
+ 
+diff --git a/src/tracker-extract/tracker-main.c b/src/tracker-extract/tracker-main.c
+index c707922..f515ec7 100644
+--- a/src/tracker-extract/tracker-main.c
++++ b/src/tracker-extract/tracker-main.c
+@@ -262,12 +262,6 @@ run_standalone (TrackerConfig *config)
+ 
+ 	tracker_locale_init ();
+ 
+-#ifdef HAVE_LIBMEDIAART
+-	if (!media_art_init ()) {
+-		g_warning ("Could not initialize media art, will not be available");
+-	}
+-#endif
+-
+ 	/* This makes sure we don't steal all the system's resources */
+ 	initialize_priority_and_scheduling (tracker_config_get_sched_idle (config),
+ 	                                    tracker_db_manager_get_first_index_done () == FALSE);
+@@ -280,9 +274,6 @@ run_standalone (TrackerConfig *config)
+ 	if (!object) {
+ 		g_object_unref (file);
+ 		g_free (uri);
+-#ifdef HAVE_LIBMEDIAART
+-		media_art_shutdown ();
+-#endif
+ 		tracker_locale_shutdown ();
+ 		return EXIT_FAILURE;
+ 	}
+@@ -295,9 +286,6 @@ run_standalone (TrackerConfig *config)
+ 	g_object_unref (file);
+ 	g_free (uri);
+ 
+-#ifdef HAVE_LIBMEDIAART
+-	media_art_shutdown ();
+-#endif
+ 	tracker_locale_shutdown ();
+ 
+ 	return EXIT_SUCCESS;
+@@ -404,12 +392,6 @@ main (int argc, char *argv[])
+ 
+ 	tracker_locale_init ();
+ 
+-#ifdef HAVE_LIBMEDIAART
+-	if (!media_art_init ()) {
+-		g_warning ("Could not initialize media art, will not be available");
+-	}
+-#endif
+-
+ 	controller = tracker_extract_controller_new (decorator);
+ 	tracker_miner_start (TRACKER_MINER (decorator));
+ 
+@@ -424,9 +406,6 @@ main (int argc, char *argv[])
+ 	tracker_miner_stop (TRACKER_MINER (decorator));
+ 
+ 	/* Shutdown subsystems */
+-#ifdef HAVE_LIBMEDIAART
+-	media_art_shutdown ();
+-#endif
+ 	tracker_locale_shutdown ();
+ 
+ 	g_object_unref (extract);
+diff --git a/src/tracker-extract/tracker-extract-gstreamer.c b/src/tracker-extract/tracker-extract-gstreamer.c
+index 1157a8b..9f27bdd 100644
+--- a/src/tracker-extract/tracker-extract-gstreamer.c
++++ b/src/tracker-extract/tracker-extract-gstreamer.c
+@@ -1558,18 +1558,27 @@ discoverer_init_and_run (MetadataExtract
+ 
+ static void
+ tracker_extract_gstreamer (const gchar          *uri,
+-                           TrackerSparqlBuilder *preupdate,
+-                           TrackerSparqlBuilder *postupdate,
+-                           TrackerSparqlBuilder *metadata,
++                           TrackerExtractInfo   *info,
+                            ExtractMime           type,
+                            const gchar          *graph)
+ {
++	TrackerSparqlBuilder *metadata, *preupdate, *postupdate;
+ 	MetadataExtractor *extractor;
+ 	GstBuffer *buffer;
+ 	gchar *cue_sheet;
+ 	gboolean success;
+ 
++#ifdef HAVE_LIBMEDIAART
++	MediaArtProcess *media_art_process;
++#endif
++
+ 	g_return_if_fail (uri);
++
++	graph = tracker_extract_info_get_graph (info);
++	metadata = tracker_extract_info_get_metadata_builder (info);
++	preupdate = tracker_extract_info_get_preupdate_builder (info);
++	postupdate = tracker_extract_info_get_postupdate_builder (info);
++
+ 	g_return_if_fail (metadata);
+ 
+ 	gst_init (NULL, NULL);
+@@ -1579,6 +1588,7 @@ tracker_extract_gstreamer (const gchar
+ 	extractor->tagcache = gst_tag_list_new_empty ();
+ 
+ #ifdef HAVE_LIBMEDIAART
++	media_art_process = tracker_extract_info_get_media_art_process (info);
+ 	extractor->media_art_type = MEDIA_ART_NONE;
+ #endif
+ 
+@@ -1608,13 +1618,36 @@ tracker_extract_gstreamer (const gchar
+ 
+ #ifdef HAVE_LIBMEDIAART
+ 		if (extractor->media_art_type != MEDIA_ART_NONE) {
+-			media_art_process (extractor->media_art_buffer,
+-			                   extractor->media_art_buffer_size,
+-			                   extractor->media_art_buffer_mime,
+-			                   extractor->media_art_type,
+-			                   extractor->media_art_artist,
+-			                   extractor->media_art_title,
+-			                   uri);
++			GError *error = NULL;
++			gboolean success = TRUE;
++
++			if (extractor->media_art_buffer) {
++				success = media_art_process_buffer (media_art_process,
++								    extractor->media_art_type,
++								    MEDIA_ART_PROCESS_FLAGS_NONE,
++								    tracker_extract_info_get_file (info),
++								    extractor->media_art_buffer,
++								    extractor->media_art_buffer_size,
++								    extractor->media_art_buffer_mime,
++								    extractor->media_art_artist,
++								    extractor->media_art_title,
++								    &error);
++			} else {
++				success = media_art_process_file (media_art_process,
++								  extractor->media_art_type,
++								  MEDIA_ART_PROCESS_FLAGS_NONE,
++								  tracker_extract_info_get_file (info),
++								  extractor->media_art_artist,
++								  extractor->media_art_title,
++								  &error);
++			}
++
++			if (!success || error) {
++				g_warning ("Could not process media art for '%s', %s",
++					   uri,
++					   error ? error->message : "No error given");
++				g_clear_error (&error);
++			}
+ 		}
+ #endif
+ 	}
+@@ -1646,24 +1679,19 @@ tracker_extract_gstreamer (const gchar
+ G_MODULE_EXPORT gboolean
+ tracker_extract_get_metadata (TrackerExtractInfo *info)
+ {
+-	TrackerSparqlBuilder *metadata, *preupdate, *postupdate;
+-	const gchar *mimetype;
+ 	GFile *file;
+ 	gchar *uri;
+ 	const gchar *graph;
+-
+-	graph = tracker_extract_info_get_graph (info);
+-	metadata = tracker_extract_info_get_metadata_builder (info);
+-	preupdate = tracker_extract_info_get_preupdate_builder (info);
+-	postupdate = tracker_extract_info_get_postupdate_builder (info);
+-	mimetype = tracker_extract_info_get_mimetype (info);
++	const gchar *mimetype;
+ 
+ 	file = tracker_extract_info_get_file (info);
+ 	uri = g_file_get_uri (file);
++	graph = tracker_extract_info_get_graph (info);
++	mimetype = tracker_extract_info_get_mimetype (info);
+ 
+ #if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
+ 	if (g_str_has_prefix (mimetype, "dlna/")) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_GUESS, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_GUESS, graph);
+ 	} else
+ #endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
+ 
+@@ -1696,19 +1696,19 @@ tracker_extract_get_metadata (TrackerExt
+ #endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
+ 
+ 	if (strcmp (mimetype, "image/svg+xml") == 0) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_SVG, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_SVG, graph);
+ 	} else if (strcmp (mimetype, "video/3gpp") == 0 ||
+ 	           strcmp (mimetype, "video/mp4") == 0 ||
+                    strcmp (mimetype, "video/x-ms-asf") == 0 ||
+                    strcmp (mimetype, "application/vnd.ms-asf") == 0 ||
+ 	           strcmp (mimetype, "application/vnd.rn-realmedia") == 0) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_GUESS, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_GUESS, graph);
+ 	} else if (g_str_has_prefix (mimetype, "audio/")) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_AUDIO, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_AUDIO, graph);
+ 	} else if (g_str_has_prefix (mimetype, "video/")) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_VIDEO, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_VIDEO, graph);
+ 	} else if (g_str_has_prefix (mimetype, "image/")) {
+-		tracker_extract_gstreamer (uri, preupdate, postupdate, metadata, EXTRACT_MIME_IMAGE, graph);
++		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_IMAGE, graph);
+ 	} else {
+ 		g_free (uri);
+ 		return FALSE;
+diff --git a/src/tracker-extract/tracker-extract-libav.c b/src/tracker-extract/tracker-extract-libav.c
+index c14998b..78b0071 100644
+--- a/src/tracker-extract/tracker-extract-libav.c
++++ b/src/tracker-extract/tracker-extract-libav.c
+@@ -330,13 +330,27 @@ tracker_extract_get_metadata (TrackerExt
+ 		}
+ 
+ #ifdef HAVE_LIBMEDIAART
+-		media_art_process (NULL,
+-		                   0,
+-		                   NULL,
+-		                   MEDIA_ART_ALBUM,
+-		                   album_artist,
+-		                   album_title,
+-		                   uri);
++		if (album_artist || album_title) {
++			MediaArtProcess *media_art_process;
++			GError *error = NULL;
++			gboolean success;
++
++			media_art_process = tracker_extract_info_get_media_art_process (info);
++			success = media_art_process_file (media_art_process,
++							  MEDIA_ART_ALBUM,
++							  MEDIA_ART_PROCESS_FLAGS_NONE,
++							  file,
++							  album_artist,
++							  album_title,
++							  &error);
++
++			if (!success || error) {
++				g_warning ("Could not process media art for '%s', %s",
++					   uri,
++					   error ? error->message : "No error given");
++				g_clear_error (&error);
++			}
++		}
+ #endif
+ 
+ 		g_free(performer_uri);
+diff --git a/src/tracker-extract/tracker-extract-mp3.c b/src/tracker-extract/tracker-extract-mp3.c
+index d26ccf3..772085b 100644
+--- a/src/tracker-extract/tracker-extract-mp3.c
++++ b/src/tracker-extract/tracker-extract-mp3.c
+@@ -2647,13 +2647,41 @@ tracker_extract_get_metadata (TrackerExt
+ 	mp3_parse (buffer, buffer_size, audio_offset, uri, metadata, &md);
+ 
+ #ifdef HAVE_LIBMEDIAART
+-	media_art_process (md.media_art_data,
+-	                   md.media_art_size,
+-	                   md.media_art_mime,
+-	                   MEDIA_ART_ALBUM,
+-	                   md.performer,
+-	                   md.album,
+-	                   uri);
++	if (md.performer || md.title) {
++		MediaArtProcess *media_art_process;
++		GError *error = NULL;
++		gboolean success = TRUE;
++
++		media_art_process = tracker_extract_info_get_media_art_process (info);
++
++		if (md.media_art_data) {
++			success = media_art_process_buffer (media_art_process,
++							    MEDIA_ART_ALBUM,
++							    MEDIA_ART_PROCESS_FLAGS_NONE,
++							    file,
++							    md.media_art_data,
++							    md.media_art_size,
++							    md.media_art_mime,
++							    md.performer,
++							    md.title,
++							    &error);
++		} else {
++			success = media_art_process_file (media_art_process,
++							  MEDIA_ART_ALBUM,
++							  MEDIA_ART_PROCESS_FLAGS_NONE,
++							  file,
++							  md.performer,
++							  md.title,
++							  &error);
++		}
++
++		if (!success || error) {
++			g_warning ("Could not process media art for '%s', %s",
++				   uri,
++				   error ? error->message : "No error given");
++			g_clear_error (&error);
++		}
++	}
+ #endif
+ 	g_free (md.media_art_data);
+ 	g_free (md.media_art_mime);
+diff --git a/src/tracker-extract/tracker-extract-vorbis.c b/src/tracker-extract/tracker-extract-vorbis.c
+index 530bf20..e619650 100644
+--- a/src/tracker-extract/tracker-extract-vorbis.c
++++ b/src/tracker-extract/tracker-extract-vorbis.c
+@@ -514,16 +514,31 @@ tracker_extract_get_metadata (TrackerExt
+ 	}
+ 
+ #ifdef HAVE_LIBMEDIAART
+-	{
+-		gchar *uri = g_file_get_uri (file);
+-		media_art_process (NULL,
+-		                   0,
+-		                   NULL,
+-		                   MEDIA_ART_ALBUM,
+-		                   vd.album_artist ? vd.album_artist : vd.artist,
+-		                   vd.album,
+-		                   uri);
+-		g_free (uri);
++	if ((vd.album_artist || vd.artist) || vd.album) {
++		MediaArtProcess *media_art_process;
++		GError *error = NULL;
++		gboolean success;
++
++		media_art_process = tracker_extract_info_get_media_art_process (info);
++
++		success = media_art_process_file (media_art_process,
++						  MEDIA_ART_ALBUM,
++						  MEDIA_ART_PROCESS_FLAGS_NONE,
++						  file,
++						  vd.album_artist ? vd.album_artist : vd.artist,
++						  vd.album,
++						  &error);
++
++		if (!success || error) {
++			gchar *uri;
++
++			uri = g_file_get_uri (file);
++			g_warning ("Could not process media art for '%s', %s",
++				   uri,
++				   error ? error->message : "No error given");
++			g_free (uri);
++			g_clear_error (&error);
++		}
+ 	}
+ #endif
+ 

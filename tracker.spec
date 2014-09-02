@@ -1,24 +1,26 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
-%bcond_with	evolution	# build with Evolution miner
+%bcond_with	evolution	# Evolution miner
 %bcond_with	icu		# libicu instead of libunistring
-%bcond_without	nautilus	# build with Evolution miner
-%bcond_without	vala		# do not build Vala API
+%bcond_without	nautilus	# Nautilus extension
+%bcond_with	static_libs	# static libraries
+%bcond_without	vala		# Vala API
 #
 %define		ver	1.0
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.0.2
+Version:	1.0.3
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.0/%{name}-%{version}.tar.xz
-# Source0-md5:	649f7e3d2c4c9dc01dfa51e131010ba3
+# Source0-md5:	b4e3462c8dfbd423ec5de4836bd5677b
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 Patch2:		%{name}-giflib.patch
+Patch3:		%{name}-libmediaart.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -52,7 +54,7 @@ BuildRequires:	libgxps-devel
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libmediaart-devel >= 0.1.0
+BuildRequires:	libmediaart-devel >= 0.5.0
 BuildRequires:	libosinfo-devel >= 0.2.9
 BuildRequires:	libpng-devel >= 2:1.2.24
 BuildRequires:	libtiff-devel
@@ -115,6 +117,7 @@ Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
 Requires:	glib2 >= 1:2.38.0
 Requires:	libexif >= 0.6.13
+Requires:	libmediaart >= 0.5.0
 Requires:	sqlite3 >= 3.7.9
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
@@ -131,16 +134,29 @@ Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.38.0
+Requires:	libmediaart-devel >= 0.5.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
-Obsoletes:	libtracker-static
+%{!?with_static_libs:Obsoletes:	libtracker-static}
 
 %description devel
 Header files for Tracker libraries.
 
 %description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek Trackera.
+
+%package static
+Summary:	Static Tracker libraries
+Summary(pl.UTF-8):	Statyczne biblioteki Trackera
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static Tracker libraries.
+
+%description static -l pl.UTF-8
+Statyczne biblioteki Trackera.
 
 %package apidocs
 Summary:	Tracker libraries API documentation
@@ -225,6 +241,7 @@ API tracker dla języka Vala.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__intltoolize}
@@ -234,10 +251,8 @@ API tracker dla języka Vala.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-hal \
-	--disable-unit-tests \
-	--disable-silent-rules \
 	%{__enable_disable apidocs gtk-doc} \
+	--disable-hal \
 	--enable-libcue \
 	--enable-libflac \
 	--enable-libvorbis \
@@ -245,6 +260,9 @@ API tracker dla języka Vala.
 	--enable-miner-firefox \
 	--enable-miner-thunderbird \
 	%{__enable_disable nautilus nautilus-extension} \
+	--disable-silent-rules \
+	%{!?with_static_libs:--disable-static} \
+	--disable-unit-tests \
 	--with-firefox-plugin-dir=%{_datadir}/iceweasel/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
@@ -263,6 +281,11 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
 %{?with_evolution:%{__rm} $RPM_BUILD_ROOT%{_libdir}/evolution/*/plugins/*.la}
 %{?with_nautilus:%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-*/*.la}
+%if %{with static_libs}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/libtracker-*.a
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*/lib*.a
+%endif
+
 
 %find_lang tracker
 
@@ -391,6 +414,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gir-1.0/Tracker-%{ver}.gir
 %{_datadir}/gir-1.0/TrackerControl-%{ver}.gir
 %{_datadir}/gir-1.0/TrackerMiner-%{ver}.gir
+
+%if %{with static_libs}
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libtracker-control-%{ver}.a
+%{_libdir}/libtracker-miner-%{ver}.a
+%{_libdir}/libtracker-sparql-%{ver}.a
+%endif
 
 %if %{with apidocs}
 %files apidocs
