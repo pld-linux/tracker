@@ -11,16 +11,14 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.0.4
-Release:	4
+Version:	1.2.3
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.0/%{name}-%{version}.tar.xz
-# Source0-md5:	0b92dad32119336ea25d409f1633cee2
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.2/%{name}-%{version}.tar.xz
+# Source0-md5:	a5b81d58c0f5a5d5ee3610e0facbf1f8
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
-Patch2:		%{name}-giflib.patch
-Patch3:		%{name}-libmediaart.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -33,6 +31,7 @@ BuildRequires:	evolution-data-server-devel >= 3.1.0
 BuildRequires:	evolution-devel >= 3.1.0
 %endif
 BuildRequires:	exempi-devel >= 2.1.0
+BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
@@ -71,7 +70,7 @@ BuildRequires:	rpmbuild(macros) >= 1.592
 BuildRequires:	sqlite3-devel >= 3.7.9
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
+#BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
@@ -240,8 +239,6 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__intltoolize}
@@ -315,13 +312,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tracker-stats
 %attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
+%attr(755,root,root) %{_libdir}/tracker-miner-apps
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
 %attr(755,root,root) %{_libdir}/tracker-miner-rss
+%attr(755,root,root) %{_libdir}/tracker-miner-user-guides
 %attr(755,root,root) %{_libdir}/tracker-store
 %attr(755,root,root) %{_libdir}/tracker-writeback
 %dir %{_libdir}/tracker-%{ver}/extract-modules
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-abw.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-bmp.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-dvi.so
+%attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-dummy.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-epub.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-flac.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/extract-modules/libextract-gif.so
@@ -347,13 +348,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-taglib.so
 %attr(755,root,root) %{_libdir}/tracker-%{ver}/writeback-modules/libwriteback-xmp.so
 %{_sysconfdir}/xdg/autostart/tracker-extract.desktop
+%{_sysconfdir}/xdg/autostart/tracker-miner-apps.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-fs.desktop
 %{_sysconfdir}/xdg/autostart/tracker-miner-rss.desktop
+%{_sysconfdir}/xdg/autostart/tracker-miner-user-guides.desktop
 %{_sysconfdir}/xdg/autostart/tracker-store.desktop
+%{_datadir}/appdata/tracker-needle.appdata.xml
+%{_datadir}/appdata/tracker-preferences.appdata.xml
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Userguides.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.DB.gschema.xml
