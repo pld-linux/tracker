@@ -70,7 +70,7 @@ BuildRequires:	rpmbuild(macros) >= 1.592
 BuildRequires:	sqlite3-devel >= 3.7.9
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
-#BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
+BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
 BuildRequires:	upower-devel >= 0.9.0
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
