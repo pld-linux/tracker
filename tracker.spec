@@ -11,12 +11,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.2.4
-Release:	2
+Version:	1.2.5
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.2/%{name}-%{version}.tar.xz
-# Source0-md5:	37b1bef444994a986a6d348759614a59
+# Source0-md5:	9344f560567f606d219ebe3f41a7219c
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -35,7 +35,7 @@ BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-devel
 BuildRequires:	giflib-devel
-BuildRequires:	glib2-devel >= 1:2.38.0
+BuildRequires:	glib2-devel >= 1:2.40.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 1.0
@@ -76,7 +76,7 @@ BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 # meegotouch >= 0.20, libstreamanalyzer >= 0.7.0
-Requires(post,postun):	glib2 >= 1:2.38.0
+Requires(post,postun):	glib2 >= 1:2.40.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
@@ -114,7 +114,7 @@ Group:		Libraries
 Requires:	NetworkManager-libs >= 0.8.0
 Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
-Requires:	glib2 >= 1:2.38.0
+Requires:	glib2 >= 1:2.40.0
 Requires:	libexif >= 0.6.13
 Requires:	libmediaart >= 0.5.0
 Requires:	sqlite3 >= 3.7.9
@@ -132,7 +132,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.38.0
+Requires:	glib2-devel >= 1:2.40.0
 Requires:	libmediaart-devel >= 0.5.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
