@@ -33,7 +33,7 @@ BuildRequires:	evolution-devel >= 3.1.0
 BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel >= 1.2.1
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.40.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
