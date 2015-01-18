@@ -1,0 +1,20 @@
+--- tracker-1.2.5/configure.ac.orig	2015-01-18 14:31:25.807583100 +0100
++++ tracker-1.2.5/configure.ac	2015-01-18 14:33:12.204245304 +0100
+@@ -225,7 +225,7 @@
+ CAMEL_REQUIRED=2.32.0
+ GEE_REQUIRED=0.3
+ TAGLIB_REQUIRED=1.6
+-LIBGRSS_REQUIRED=0.5
++LIBGRSS_REQUIRED=0.6
+ REST_REQUIRED=0.6
+ NETWORK_MANAGER_REQUIRED=0.8
+ GSTREAMER_REQUIRED=0.10.31
+@@ -500,7 +500,7 @@
+ 
+ # Check requirements for tracker-miner-rss
+ TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+-                            libgrss-0.5  >= $LIBGRSS_REQUIRED"
++                            libgrss-0.6  >= $LIBGRSS_REQUIRED"
+ 
+ PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
+                   [have_tracker_miner_rss=yes],

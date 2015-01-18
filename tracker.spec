@@ -19,6 +19,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.2/%{name}-%{version}.t
 # Source0-md5:	9344f560567f606d219ebe3f41a7219c
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
+Patch2:		%{name}-libgrss.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -47,7 +48,7 @@ BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.8
-BuildRequires:	libgrss-devel >= 0.5
+BuildRequires:	libgrss-devel >= 0.6
 BuildRequires:	libgsf-devel >= 1.14.24
 BuildRequires:	libgxps-devel
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
@@ -83,7 +84,7 @@ Requires:	dbus >= 1.3.1
 Requires:	flac >= 1.2.1
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	hicolor-icon-theme
-Requires:	libgrss >= 0.5
+Requires:	libgrss >= 0.6
 Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libpng >= 2:1.2.24
@@ -239,6 +240,7 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__intltoolize}
