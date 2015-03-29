@@ -6,13 +6,13 @@
 %bcond_without	nautilus	# Nautilus extension
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
-#
+
 %define		ver	1.0
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.2.5
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.2/%{name}-%{version}.tar.xz
@@ -163,6 +163,9 @@ Summary:	Tracker libraries API documentation
 Summary(pl.UTF-8):	Dokumentacja API bibliotek Trackera
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 Tracker libraries API documentation.
