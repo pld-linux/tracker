@@ -11,12 +11,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.2.5
-Release:	4
+Version:	1.4.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.2/%{name}-%{version}.tar.xz
-# Source0-md5:	9344f560567f606d219ebe3f41a7219c
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.4/%{name}-%{version}.tar.xz
+# Source0-md5:	31419ccdb03c1bc2fa7762835936656c
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 Patch2:		%{name}-libgrss.patch
@@ -28,10 +28,11 @@ BuildRequires:	dbus-devel >= 1.3.1
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	enca-devel >= 1.9
 %if %{with evolution}
-BuildRequires:	evolution-data-server-devel >= 3.1.0
-BuildRequires:	evolution-devel >= 3.1.0
+BuildRequires:	evolution-data-server-devel >= 3.2.0
+BuildRequires:	evolution-devel >= 3.2.0
 %endif
 BuildRequires:	exempi-devel >= 2.1.0
+# libavcodec >= 0.8.4 libavformat >= 0.8.4
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-tools
@@ -54,9 +55,10 @@ BuildRequires:	libgxps-devel
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
 BuildRequires:	libiptcdata-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libmediaart-devel >= 0.5.0
+BuildRequires:	libmediaart2-devel >= 1.9.0
 BuildRequires:	libosinfo-devel >= 0.2.9
 BuildRequires:	libpng-devel >= 2:1.2.24
+BuildRequires:	libstemmer-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
 %{!?with_icu:BuildRequires:	libunistring-devel}
@@ -117,7 +119,7 @@ Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
 Requires:	glib2 >= 1:2.40.0
 Requires:	libexif >= 0.6.13
-Requires:	libmediaart >= 0.5.0
+Requires:	libmediaart2 >= 1.9.0
 Requires:	sqlite3 >= 3.7.9
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
@@ -134,7 +136,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.40.0
-Requires:	libmediaart-devel >= 0.5.0
+Requires:	libmediaart2-devel >= 1.9.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
@@ -173,13 +175,26 @@ Tracker libraries API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API bibliotek Trackera.
 
+%package -n bash-completion-tracker
+Summary:	Bash completion for tracker command
+Summary(pl.UTF-8):	Bashowe uzupełnianie parametrów dla polecenia tracker
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+Requires:	bash-completion
+
+%description -n bash-completion-tracker
+Bash completion for tracker command.
+
+%description -n bash-completion-tracker -l pl.UTF-8
+Bashowe uzupełnianie parametrów dla polecenia tracker.
+
 %package -n evolution-plugin-tracker
 Summary:	Tracker plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Trackera do Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 3.1.0
-Requires:	evolution-data-server-devel >= 3.1.0
+Requires:	evolution >= 3.2.0
+Requires:	evolution-data-server-devel >= 3.2.0
 
 %description -n evolution-plugin-tracker
 Tracker plugin for Evolution.
@@ -252,6 +267,7 @@ API tracker dla języka Vala.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 %configure \
 	%{__enable_disable apidocs gtk-doc} \
 	--disable-hal \
@@ -307,6 +323,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f tracker.lang
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/tracker
 %attr(755,root,root) %{_bindir}/tracker-control
 %attr(755,root,root) %{_bindir}/tracker-import
 %attr(755,root,root) %{_bindir}/tracker-info
@@ -381,20 +398,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/tracker-preferences.desktop
 %{_iconsdir}/hicolor/*/apps/tracker.png
 %{_iconsdir}/hicolor/*/apps/tracker.svg
-%{_mandir}/man1/tracker-control.1*
+%{_mandir}/man1/tracker-daemon.1*
 %{_mandir}/man1/tracker-extract.1*
-%{_mandir}/man1/tracker-import.1*
+%{_mandir}/man1/tracker-index.1*
 %{_mandir}/man1/tracker-info.1*
 %{_mandir}/man1/tracker-miner-fs.1*
 %{_mandir}/man1/tracker-miner-rss.1*
 %{_mandir}/man1/tracker-needle.1*
 %{_mandir}/man1/tracker-preferences.1*
+%{_mandir}/man1/tracker-reset.1*
 %{_mandir}/man1/tracker-search.1*
 %{_mandir}/man1/tracker-sparql.1*
-%{_mandir}/man1/tracker-stats.1*
+%{_mandir}/man1/tracker-sql.1*
+%{_mandir}/man1/tracker-status.1*
 %{_mandir}/man1/tracker-store.1*
 %{_mandir}/man1/tracker-tag.1*
 %{_mandir}/man1/tracker-writeback.1*
+%{_mandir}/man5/tracker-db.cfg.5*
+%{_mandir}/man5/tracker-extract.cfg.5*
+%{_mandir}/man5/tracker-fts.cfg.5*
+%{_mandir}/man5/tracker-miner-fs.cfg.5*
+%{_mandir}/man5/tracker-store.cfg.5*
+%{_mandir}/man5/tracker-writeback.cfg.5*
 
 %files libs
 %defattr(644,root,root,755)
@@ -442,6 +467,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_gtkdocdir}/libtracker-sparql
 %{_gtkdocdir}/ontology
 %endif
+
+%files -n bash-completion-tracker
+%defattr(644,root,root,755)
+/etc/bash_completion.d/tracker-prompt.sh
 
 %if %{with evolution}
 %files -n evolution-plugin-tracker
