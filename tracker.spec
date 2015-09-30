@@ -11,15 +11,14 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.4.0
+Version:	1.6.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.4/%{name}-%{version}.tar.xz
-# Source0-md5:	31419ccdb03c1bc2fa7762835936656c
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.6/%{name}-%{version}.tar.xz
+# Source0-md5:	037847a890fa30e8d258e03e59047ea0
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
-Patch2:		%{name}-libgrss.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -49,7 +48,7 @@ BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.8
-BuildRequires:	libgrss-devel >= 0.6
+BuildRequires:	libgrss-devel >= 0.7
 BuildRequires:	libgsf-devel >= 1.14.24
 BuildRequires:	libgxps-devel
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
@@ -86,7 +85,7 @@ Requires:	dbus >= 1.3.1
 Requires:	flac >= 1.2.1
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	hicolor-icon-theme
-Requires:	libgrss >= 0.6
+Requires:	libgrss >= 0.7
 Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libpng >= 2:1.2.24
@@ -258,7 +257,6 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__intltoolize}
@@ -388,6 +386,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.Extract.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.FTS.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.Miner.Files.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.Needle.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.Store.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.Writeback.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker.enums.xml
@@ -470,7 +469,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n bash-completion-tracker
 %defattr(644,root,root,755)
-/etc/bash_completion.d/tracker-prompt.sh
+%{_datadir}/bash-completion/completions/tracker
 
 %if %{with evolution}
 %files -n evolution-plugin-tracker
