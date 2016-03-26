@@ -11,12 +11,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.6.2
+Version:	1.8.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.6/%{name}-%{version}.tar.xz
-# Source0-md5:	2bfb543232e320e86ca5c4842b7a4ec5
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.8/%{name}-%{version}.tar.xz
+# Source0-md5:	e0ccffcb5abec22836e17292640fabd0
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -322,15 +322,8 @@ rm -rf $RPM_BUILD_ROOT
 %files -f tracker.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tracker
-%attr(755,root,root) %{_bindir}/tracker-control
-%attr(755,root,root) %{_bindir}/tracker-import
-%attr(755,root,root) %{_bindir}/tracker-info
 %attr(755,root,root) %{_bindir}/tracker-needle
 %attr(755,root,root) %{_bindir}/tracker-preferences
-%attr(755,root,root) %{_bindir}/tracker-search
-%attr(755,root,root) %{_bindir}/tracker-sparql
-%attr(755,root,root) %{_bindir}/tracker-stats
-%attr(755,root,root) %{_bindir}/tracker-tag
 %attr(755,root,root) %{_libdir}/tracker-extract
 %attr(755,root,root) %{_libdir}/tracker-miner-apps
 %attr(755,root,root) %{_libdir}/tracker-miner-fs
