@@ -12,7 +12,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.8.0
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.8/%{name}-%{version}.tar.xz
@@ -214,18 +214,18 @@ This package adds Tracker integration to Nautilus.
 %description -n nautilus-extension-tracker -l pl.UTF-8
 Ten pakiet dodaje integrację Trackera z Nautilusem.
 
-%package -n iceweasel-extension-tracker
-Summary:	Tracker extension for Iceweasel
-Summary(pl.UTF-8):	Rozszerzenie Trackera dla Iceweasel
+%package -n firefox-extension-tracker
+Summary:	Tracker extension for Firefox
+Summary(pl.UTF-8):	Rozszerzenie Trackera dla Firefox
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	iceweasel >= 22.0
+Requires:	firefox >= 22.0
 
-%description -n iceweasel-extension-tracker
-This package adds Tracker integration to Iceweasel.
+%description -n firefox-extension-tracker
+This package adds Tracker integration to Firefox.
 
-%description -n iceweasel-extension-tracker -l pl.UTF-8
-Ten pakiet dodaje integrację Trackera z Iceweaselem.
+%description -n firefox-extension-tracker -l pl.UTF-8
+Ten pakiet dodaje integrację Trackera z Firefoksem.
 
 %package -n icedove-extension-tracker
 Summary:	Tracker extension for Icedove
@@ -282,7 +282,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static} \
 	--disable-unit-tests \
-	--with-firefox-plugin-dir=%{_datadir}/iceweasel/browser/extensions \
+	--with-firefox-plugin-dir=%{_datadir}/firefox/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
 	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
@@ -481,9 +481,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 %endif
 
-%files -n iceweasel-extension-tracker
+%files -n firefox-extension-tracker
 %defattr(644,root,root,755)
-%{_datadir}/iceweasel/browser/extensions/trackerfox@bustany.org
+%{_datadir}/firefox/browser/extensions/trackerfox@bustany.org
 %{_datadir}/xul-ext/trackerfox
 
 %files -n icedove-extension-tracker
