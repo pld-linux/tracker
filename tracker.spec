@@ -12,7 +12,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.8.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.8/%{name}-%{version}.tar.xz
@@ -68,7 +68,7 @@ BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	python >= 1:2.6
-BuildRequires:	rpmbuild(macros) >= 1.592
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sqlite3-devel >= 3.7.9
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
@@ -179,7 +179,7 @@ Summary:	Bash completion for tracker command
 Summary(pl.UTF-8):	Bashowe uzupełnianie parametrów dla polecenia tracker
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-Requires:	bash-completion
+Requires:	bash-completion >= 2.0
 
 %description -n bash-completion-tracker
 Bash completion for tracker command.
@@ -246,6 +246,9 @@ Summary(pl.UTF-8):	API tracker dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.18.0
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n vala-tracker
 tracker API for Vala language.
@@ -462,7 +465,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n bash-completion-tracker
 %defattr(644,root,root,755)
-%{_datadir}/bash-completion/completions/tracker
+%{bash_compdir}/tracker
 
 %if %{with evolution}
 %files -n evolution-plugin-tracker
