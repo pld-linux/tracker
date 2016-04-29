@@ -220,6 +220,7 @@ Summary(pl.UTF-8):	Rozszerzenie Trackera dla Firefox
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	firefox >= 22.0
+Obsoletes:	iceweasel-extension-tracker
 
 %description -n firefox-extension-tracker
 This package adds Tracker integration to Firefox.
