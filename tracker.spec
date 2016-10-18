@@ -11,12 +11,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.8.0
-Release:	4
+Version:	1.10.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.8/%{name}-%{version}.tar.xz
-# Source0-md5:	e0ccffcb5abec22836e17292640fabd0
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.10/%{name}-%{version}.tar.xz
+# Source0-md5:	3496c0d6c6e3018bfcd9ee0f421664ea
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 URL:		http://projects.gnome.org/tracker/
@@ -36,7 +36,7 @@ BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel >= 1.2.1
 BuildRequires:	gettext-tools
 BuildRequires:	giflib-devel
-BuildRequires:	glib2-devel >= 1:2.40.0
+BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
 BuildRequires:	gstreamer-devel >= 1.0
@@ -69,7 +69,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	python >= 1:2.6
 BuildRequires:	rpmbuild(macros) >= 1.673
-BuildRequires:	sqlite3-devel >= 3.7.9
+BuildRequires:	sqlite3-devel >= 3.7.15
 BuildRequires:	taglib-devel >= 1.6
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel >= 2.32.2-2
@@ -78,7 +78,7 @@ BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 # meegotouch >= 0.20, libstreamanalyzer >= 0.7.0
-Requires(post,postun):	glib2 >= 1:2.40.0
+Requires(post,postun):	glib2 >= 1:2.44.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
@@ -116,10 +116,10 @@ Group:		Libraries
 Requires:	NetworkManager-libs >= 0.8.0
 Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
-Requires:	glib2 >= 1:2.40.0
+Requires:	glib2 >= 1:2.44.0
 Requires:	libexif >= 0.6.13
 Requires:	libmediaart2 >= 1.9.0
-Requires:	sqlite3 >= 3.7.9
+Requires:	sqlite3 >= 3.7.15
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
 
@@ -134,7 +134,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.40.0
+Requires:	glib2-devel >= 1:2.44.0
 Requires:	libmediaart2-devel >= 1.9.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
@@ -394,6 +394,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/tracker-preferences.desktop
 %{_iconsdir}/hicolor/*/apps/tracker.png
 %{_iconsdir}/hicolor/*/apps/tracker.svg
+%{systemduserunitdir}/tracker-extract.service
+%{systemduserunitdir}/tracker-miner-apps.service
+%{systemduserunitdir}/tracker-miner-fs.service
+%{systemduserunitdir}/tracker-miner-rss.service
+%{systemduserunitdir}/tracker-miner-user-guides.service
+%{systemduserunitdir}/tracker-store.service
+%{systemduserunitdir}/tracker-writeback.service
 %{_mandir}/man1/tracker-daemon.1*
 %{_mandir}/man1/tracker-extract.1*
 %{_mandir}/man1/tracker-index.1*
@@ -410,12 +417,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tracker-store.1*
 %{_mandir}/man1/tracker-tag.1*
 %{_mandir}/man1/tracker-writeback.1*
-%{_mandir}/man5/tracker-db.cfg.5*
-%{_mandir}/man5/tracker-extract.cfg.5*
-%{_mandir}/man5/tracker-fts.cfg.5*
-%{_mandir}/man5/tracker-miner-fs.cfg.5*
-%{_mandir}/man5/tracker-store.cfg.5*
-%{_mandir}/man5/tracker-writeback.cfg.5*
 
 %files libs
 %defattr(644,root,root,755)
