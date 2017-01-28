@@ -12,13 +12,14 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.10.4
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.10/%{name}-%{version}.tar.xz
 # Source0-md5:	5eda28609155c1ab07053666d2460bf2
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
+Patch2:		%{name}-docs.patch
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	autoconf >= 2.64
@@ -57,6 +58,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmediaart2-devel >= 1.9.0
 BuildRequires:	libosinfo-devel >= 0.2.9
 BuildRequires:	libpng-devel >= 2:1.2.24
+BuildRequires:	libseccomp-devel >= 2.0
 BuildRequires:	libstemmer-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
@@ -119,6 +121,7 @@ Requires:	exempi >= 2.1.0
 Requires:	glib2 >= 1:2.44.0
 Requires:	libexif >= 0.6.13
 Requires:	libmediaart2 >= 1.9.0
+Requires:	libseccomp >= 2.0
 Requires:	sqlite3 >= 3.7.15
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
@@ -261,6 +264,7 @@ API tracker dla języka Vala.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__intltoolize}
