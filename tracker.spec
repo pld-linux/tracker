@@ -12,7 +12,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.10.5
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.10/%{name}-%{version}.tar.xz
@@ -231,18 +231,19 @@ This package adds Tracker integration to Firefox.
 %description -n firefox-extension-tracker -l pl.UTF-8
 Ten pakiet dodaje integrację Trackera z Firefoksem.
 
-%package -n icedove-extension-tracker
-Summary:	Tracker extension for Icedove
-Summary(pl.UTF-8):	Rozszerzenie Trackera dla Icedove
+%package -n thunderbird-extension-tracker
+Summary:	Tracker extension for Thunderbird
+Summary(pl.UTF-8):	Rozszerzenie Trackera dla Thunderbird
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	icedove >= 5.0
+Requires:	thunderbird >= 5.0
+Obsoletes:	icedove-extension-tracker
 
-%description -n icedove-extension-tracker
-This package adds Tracker integration to Icedove.
+%description -n thunderbird-extension-tracker
+This package adds Tracker integration to Thunderbird.
 
-%description -n icedove-extension-tracker -l pl.UTF-8
-Ten pakiet dodaje integrację Trackera z programem Icedove.
+%description -n thunderbird-extension-tracker -l pl.UTF-8
+Ten pakiet dodaje integrację Trackera z programem Thunderbird.
 
 %package -n vala-tracker
 Summary:	tracker API for Vala language
@@ -289,7 +290,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	--disable-unit-tests \
 	--with-firefox-plugin-dir=%{_datadir}/firefox/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
-	--with-thunderbird-plugin-dir=%{_datadir}/icedove/extensions \
+	--with-thunderbird-plugin-dir=%{_datadir}/thunderbird/extensions \
 	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
 
 %{__make}
@@ -492,10 +493,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/firefox/browser/extensions/trackerfox@bustany.org
 %{_datadir}/xul-ext/trackerfox
 
-%files -n icedove-extension-tracker
+%files -n thunderbird-extension-tracker
 %defattr(644,root,root,755)
 %{_desktopdir}/trackerbird-launcher.desktop
-%{_datadir}/icedove/extensions/trackerbird@bustany.org
+%{_datadir}/thunderbird/extensions/trackerbird@bustany.org
 %{_datadir}/xul-ext/trackerbird
 
 %if %{with vala}
