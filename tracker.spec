@@ -11,12 +11,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	1.10.5
-Release:	5
+Version:	1.12.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.10/%{name}-%{version}.tar.xz
-# Source0-md5:	c2a0c15140d4542eead6902508f08cd7
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.12/%{name}-%{version}.tar.xz
+# Source0-md5:	53bf7c3aead0fbc70823d26a9199c34e
 Patch0:		link.patch
 Patch1:		force-tb-fx-miners.patch
 Patch2:		%{name}-docs.patch
@@ -46,6 +46,7 @@ BuildRequires:	gtk+3-devel >= 3.0.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.8}
 BuildRequires:	gupnp-dlna-devel >= 0.9.4
 BuildRequires:	intltool >= 0.40.0
+BuildRequires:	json-glib-devel >= 1.0
 BuildRequires:	libcue-devel
 BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libgee-devel >= 0.8
@@ -59,6 +60,8 @@ BuildRequires:	libmediaart2-devel >= 1.9.0
 BuildRequires:	libosinfo-devel >= 0.2.9
 BuildRequires:	libpng-devel >= 2:1.2.24
 BuildRequires:	libseccomp-devel >= 2.0
+BuildRequires:	libsoup-devel >= 2.40
+BuildRequires:	libstdc++-devel
 BuildRequires:	libstemmer-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	libtool >= 2:2.2
@@ -105,6 +108,9 @@ Obsoletes:	tracker-search-gui
 Obsoletes:	tracker-startup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+# circular dependencies: libtracker-data -> libtracker-libtracker-direct -> libtracker-sparql-backend [->] libtracker-data
+%define		skip_post_check_so		.*%{_libdir}/tracker-1.0/libtracker-data.so.*
+
 %description
 Tracker is an indexing sub-system and search aggregator.
 
@@ -119,9 +125,11 @@ Requires:	NetworkManager-libs >= 0.8.0
 Requires:	enca-libs >= 1.9
 Requires:	exempi >= 2.1.0
 Requires:	glib2 >= 1:2.44.0
+Requires:	json-glib >= 1.0
 Requires:	libexif >= 0.6.13
 Requires:	libmediaart2 >= 1.9.0
 Requires:	libseccomp >= 2.0
+Requires:	libsoup >= 2.40
 Requires:	sqlite3 >= 3.7.15
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk

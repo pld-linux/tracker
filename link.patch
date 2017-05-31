@@ -1,10 +1,13 @@
---- tracker-0.10.8/src/libtracker-data/Makefile.am.wiget	2011-04-08 18:33:18.332392677 +0200
-+++ tracker-0.10.8/src/libtracker-data/Makefile.am	2011-04-08 18:34:26.596050671 +0200
-@@ -47,6 +47,7 @@ libtracker_data_la_SOURCES =
- libtracker_data_la_LIBADD =                            \
- 	$(top_builddir)/src/gvdb/libgvdb.la \
- 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql.la \
- 	$(BUILD_LIBS)                                  \
- 	$(LIBTRACKER_DATA_LIBS)
+Hack to allow build tracker libs correctly with older libs installed in system
+--- tracker-1.12.0/src/libtracker-miner/Makefile.am.orig	2016-11-27 20:33:39.000000000 +0100
++++ tracker-1.12.0/src/libtracker-miner/Makefile.am	2017-05-30 22:14:40.255185439 +0200
+@@ -111,8 +111,8 @@
  
+ libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD =     \
+ 	libtracker-miner-private.la \
+-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	-lm                                            \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_MINER_LIBS)
