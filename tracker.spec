@@ -12,7 +12,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.12.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.12/%{name}-%{version}.tar.xz
@@ -246,6 +246,7 @@ Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	thunderbird >= 5.0
 Obsoletes:	icedove-extension-tracker
+BuildArch:	noarch
 
 %description -n thunderbird-extension-tracker
 This package adds Tracker integration to Thunderbird.
@@ -298,7 +299,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	--disable-unit-tests \
 	--with-firefox-plugin-dir=%{_datadir}/firefox/browser/extensions \
 	--with-html-dir=%{_gtkdocdir} \
-	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions \
+	--with-thunderbird-plugin-dir=%{_datadir}/thunderbird/extensions \
 	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
 
 %{__make}
