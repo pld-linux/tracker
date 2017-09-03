@@ -12,7 +12,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	1.12.1
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/1.12/%{name}-%{version}.tar.xz
@@ -505,7 +505,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n thunderbird-extension-tracker
 %defattr(644,root,root,755)
 %{_desktopdir}/trackerbird-launcher.desktop
-%{_libdir}/thunderbird/extensions/trackerbird@bustany.org
+%{_datadir}/thunderbird/extensions/trackerbird@bustany.org
 %{_datadir}/xul-ext/trackerbird
 
 %if %{with vala}
