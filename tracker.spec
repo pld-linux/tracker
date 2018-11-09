@@ -9,12 +9,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	2.0.1
+Version:	2.0.4
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.0/%{name}-%{version}.tar.xz
-# Source0-md5:	10e8a86d288bd6a4ea5a6edaa1c183d0
+# Source0-md5:	ad1b14754828db76f3aeb47c9d03bb0a
 Patch0:		link.patch
 Patch1:		%{name}-docs.patch
 URL:		http://projects.gnome.org/tracker/
@@ -26,6 +26,7 @@ BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
+BuildRequires:	gtk-doc >= 1.8
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	json-glib-devel >= 1.0
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
@@ -46,6 +47,7 @@ BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	glib2 >= 1:2.44.0
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	dbus >= 1.3.1
 Requires:	libxml2 >= 1:2.6.31
 Requires:	upower-libs >= 0.9.0
 Obsoletes:	gnome-applet-deskbar-extension-tracker
@@ -70,6 +72,7 @@ Group:		Libraries
 Requires:	NetworkManager-libs >= 0.8.0
 Requires:	glib2 >= 1:2.44.0
 Requires:	json-glib >= 1.0
+Requires:	libsoup >= 2.40
 Requires:	sqlite3 >= 3.21.0-2
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
