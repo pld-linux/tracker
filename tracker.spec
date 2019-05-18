@@ -9,33 +9,28 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	2.1.6
+Version:	2.2.2
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.1/%{name}-%{version}.tar.xz
-# Source0-md5:	848977cfa2e9c099b53522885eee031d
-Patch0:		link.patch
-Patch1:		%{name}-docs.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.2/%{name}-%{version}.tar.xz
+# Source0-md5:	2ec18c6f9e877abdfe1f50bac0e9eade
 URL:		http://projects.gnome.org/tracker/
 BuildRequires:	NetworkManager-devel >= 0.8.0
-BuildRequires:	autoconf >= 2.64
-BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.44.0
+BuildRequires:	glib2-devel >= 1:2.46.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	graphviz
 BuildRequires:	gtk-doc >= 1.8
-BuildRequires:	intltool >= 0.40.0
 BuildRequires:	json-glib-devel >= 1.0
 %{?with_icu:BuildRequires:	libicu-devel >= 4.8.1.1}
 BuildRequires:	libsoup-devel >= 2.40
 BuildRequires:	libstemmer-devel
-BuildRequires:	libtool >= 2:2.2
 %{!?with_icu:BuildRequires:	libunistring-devel}
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
+BuildRequires:	meson >= 0.47
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.6
 BuildRequires:	rpmbuild(macros) >= 1.673
@@ -45,7 +40,7 @@ BuildRequires:	upower-devel >= 0.9.0
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
-Requires(post,postun):	glib2 >= 1:2.44.0
+Requires(post,postun):	glib2 >= 1:2.46.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
 Requires:	libxml2 >= 1:2.6.31
@@ -70,7 +65,7 @@ Summary:	Tracker libraries
 Summary(pl.UTF-8):	Biblioteki Trackera
 Group:		Libraries
 Requires:	NetworkManager-libs >= 0.8.0
-Requires:	glib2 >= 1:2.44.0
+Requires:	glib2 >= 1:2.46.0
 Requires:	json-glib >= 1.0
 Requires:	libsoup >= 2.40
 Requires:	sqlite3 >= 3.21.0-2
@@ -88,7 +83,7 @@ Summary:	Header files for Tracker libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.44.0
+Requires:	glib2-devel >= 1:2.46.0
 Obsoletes:	libtracker-devel
 Obsoletes:	libtracker-gtk-devel
 Obsoletes:	libtracker-gtk-static
@@ -158,40 +153,25 @@ API tracker dla języka Vala.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
-%{__intltoolize}
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
-%configure \
-	%{__enable_disable apidocs gtk-doc} \
-	--disable-hal \
-	--disable-silent-rules \
-	%{!?with_static_libs:--disable-static} \
-	--disable-unit-tests \
-	--with-html-dir=%{_gtkdocdir} \
-	--with-unicode-support=%{?with_icu:libicu}%{!?with_icu:libunistring}
+%meson build \
+	%{!?with_static_libs:--default-library=shared} \
+	%{?with_apidocs:-Ddocs=true} \
+	-Dfunctional_tests=false \
+	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
 
-%{__make}
+%ninja_build -C build -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/*.la
 %if %{with static_libs}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/libtracker-*.a
 %endif
-
 
 %find_lang tracker
 
