@@ -5,7 +5,7 @@
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
-%define		ver	2.0
+%define		mver	2.0
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
@@ -31,12 +31,12 @@ BuildRequires:	libstemmer-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	meson >= 0.47
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
-BuildRequires:	python >= 1:2.6
-BuildRequires:	rpmbuild(macros) >= 1.673
+BuildRequires:	python3 >= 1:3.2
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	sqlite3-devel >= 3.21.0-2
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	upower-devel >= 0.9.0
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -44,9 +44,14 @@ Requires(post,postun):	glib2 >= 1:2.46.0
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
 Requires:	libxml2 >= 1:2.6.31
-Requires:	upower-libs >= 0.9.0
+Obsoletes:	evolution-plugin-tracker < 2
+Obsoletes:	firefox-extension-tracker < 2
 Obsoletes:	gnome-applet-deskbar-extension-tracker
 Obsoletes:	gnome-applet-tracker
+Obsoletes:	icedove-extension-tracker < 2
+Obsoletes:	iceweasel-extension-tracker < 2
+Obsoletes:	nautilus-extension-tracker < 2
+Obsoletes:	thunderbird-extension-tracker < 2
 Obsoletes:	tracker-search-gui
 Obsoletes:	tracker-startup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -170,7 +175,7 @@ rm -rf $RPM_BUILD_ROOT
 %ninja_install -C build
 
 %if %{with static_libs}
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{ver}/libtracker-*.a
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{mver}/libtracker-*.a
 %endif
 
 %find_lang tracker
@@ -213,39 +218,39 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-control-%{ver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-control-%{ver}.so.0
-%attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{ver}.so.0
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{ver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-control-%{mver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-control-%{mver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{mver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{mver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-sparql-%{mver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{mver}.so.0
 # required by libtracker-miner
-%dir %{_libdir}/tracker-%{ver}
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-common.so*
-%attr(755,root,root) %{_libdir}/tracker-%{ver}/libtracker-data.so*
-%{_libdir}/girepository-1.0/Tracker-%{ver}.typelib
-%{_libdir}/girepository-1.0/TrackerControl-%{ver}.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-%{ver}.typelib
+%dir %{_libdir}/tracker-%{mver}
+%attr(755,root,root) %{_libdir}/tracker-%{mver}/libtracker-common.so*
+%attr(755,root,root) %{_libdir}/tracker-%{mver}/libtracker-data.so*
+%{_libdir}/girepository-1.0/Tracker-%{mver}.typelib
+%{_libdir}/girepository-1.0/TrackerControl-%{mver}.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-%{mver}.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-control-%{ver}.so
-%attr(755,root,root) %{_libdir}/libtracker-miner-%{ver}.so
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{ver}.so
-%{_includedir}/tracker-%{ver}
-%{_pkgconfigdir}/tracker-control-%{ver}.pc
-%{_pkgconfigdir}/tracker-miner-%{ver}.pc
-%{_pkgconfigdir}/tracker-sparql-%{ver}.pc
-%{_datadir}/gir-1.0/Tracker-%{ver}.gir
-%{_datadir}/gir-1.0/TrackerControl-%{ver}.gir
-%{_datadir}/gir-1.0/TrackerMiner-%{ver}.gir
+%attr(755,root,root) %{_libdir}/libtracker-control-%{mver}.so
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{mver}.so
+%attr(755,root,root) %{_libdir}/libtracker-sparql-%{mver}.so
+%{_includedir}/tracker-%{mver}
+%{_pkgconfigdir}/tracker-control-%{mver}.pc
+%{_pkgconfigdir}/tracker-miner-%{mver}.pc
+%{_pkgconfigdir}/tracker-sparql-%{mver}.pc
+%{_datadir}/gir-1.0/Tracker-%{mver}.gir
+%{_datadir}/gir-1.0/TrackerControl-%{mver}.gir
+%{_datadir}/gir-1.0/TrackerMiner-%{mver}.gir
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libtracker-control-%{ver}.a
-%{_libdir}/libtracker-miner-%{ver}.a
-%{_libdir}/libtracker-sparql-%{ver}.a
+%{_libdir}/libtracker-control-%{mver}.a
+%{_libdir}/libtracker-miner-%{mver}.a
+%{_libdir}/libtracker-sparql-%{mver}.a
 %endif
 
 %if %{with apidocs}
@@ -264,10 +269,10 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with vala}
 %files -n vala-tracker
 %defattr(644,root,root,755)
-%{_datadir}/vala/vapi/tracker-control-%{ver}.deps
-%{_datadir}/vala/vapi/tracker-control-%{ver}.vapi
-%{_datadir}/vala/vapi/tracker-miner-%{ver}.deps
-%{_datadir}/vala/vapi/tracker-miner-%{ver}.vapi
-%{_datadir}/vala/vapi/tracker-sparql-%{ver}.deps
-%{_datadir}/vala/vapi/tracker-sparql-%{ver}.vapi
+%{_datadir}/vala/vapi/tracker-control-%{mver}.deps
+%{_datadir}/vala/vapi/tracker-control-%{mver}.vapi
+%{_datadir}/vala/vapi/tracker-miner-%{mver}.deps
+%{_datadir}/vala/vapi/tracker-miner-%{mver}.vapi
+%{_datadir}/vala/vapi/tracker-sparql-%{mver}.deps
+%{_datadir}/vala/vapi/tracker-sparql-%{mver}.vapi
 %endif
