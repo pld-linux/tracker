@@ -5,7 +5,7 @@
 %bcond_with	static_libs	# static libraries
 %bcond_without	vala		# Vala API
 
-%define		mver	2.0
+%define		abiver	2.0
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
@@ -175,7 +175,7 @@ rm -rf $RPM_BUILD_ROOT
 %ninja_install -C build
 
 %if %{with static_libs}
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{mver}/libtracker-*.a
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{abiver}/libtracker-*.a
 %endif
 
 %find_lang tracker
@@ -218,39 +218,39 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-control-%{mver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-control-%{mver}.so.0
-%attr(755,root,root) %{_libdir}/libtracker-miner-%{mver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{mver}.so.0
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{mver}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{mver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-control-%{abiver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-control-%{abiver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{abiver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-miner-%{abiver}.so.0
+%attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{abiver}.so.0
 # required by libtracker-miner
-%dir %{_libdir}/tracker-%{mver}
-%attr(755,root,root) %{_libdir}/tracker-%{mver}/libtracker-common.so*
-%attr(755,root,root) %{_libdir}/tracker-%{mver}/libtracker-data.so*
-%{_libdir}/girepository-1.0/Tracker-%{mver}.typelib
-%{_libdir}/girepository-1.0/TrackerControl-%{mver}.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-%{mver}.typelib
+%dir %{_libdir}/tracker-%{abiver}
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-common.so*
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-data.so*
+%{_libdir}/girepository-1.0/Tracker-%{abiver}.typelib
+%{_libdir}/girepository-1.0/TrackerControl-%{abiver}.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-%{abiver}.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtracker-control-%{mver}.so
-%attr(755,root,root) %{_libdir}/libtracker-miner-%{mver}.so
-%attr(755,root,root) %{_libdir}/libtracker-sparql-%{mver}.so
-%{_includedir}/tracker-%{mver}
-%{_pkgconfigdir}/tracker-control-%{mver}.pc
-%{_pkgconfigdir}/tracker-miner-%{mver}.pc
-%{_pkgconfigdir}/tracker-sparql-%{mver}.pc
-%{_datadir}/gir-1.0/Tracker-%{mver}.gir
-%{_datadir}/gir-1.0/TrackerControl-%{mver}.gir
-%{_datadir}/gir-1.0/TrackerMiner-%{mver}.gir
+%attr(755,root,root) %{_libdir}/libtracker-control-%{abiver}.so
+%attr(755,root,root) %{_libdir}/libtracker-miner-%{abiver}.so
+%attr(755,root,root) %{_libdir}/libtracker-sparql-%{abiver}.so
+%{_includedir}/tracker-%{abiver}
+%{_pkgconfigdir}/tracker-control-%{abiver}.pc
+%{_pkgconfigdir}/tracker-miner-%{abiver}.pc
+%{_pkgconfigdir}/tracker-sparql-%{abiver}.pc
+%{_datadir}/gir-1.0/Tracker-%{abiver}.gir
+%{_datadir}/gir-1.0/TrackerControl-%{abiver}.gir
+%{_datadir}/gir-1.0/TrackerMiner-%{abiver}.gir
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libtracker-control-%{mver}.a
-%{_libdir}/libtracker-miner-%{mver}.a
-%{_libdir}/libtracker-sparql-%{mver}.a
+%{_libdir}/libtracker-control-%{abiver}.a
+%{_libdir}/libtracker-miner-%{abiver}.a
+%{_libdir}/libtracker-sparql-%{abiver}.a
 %endif
 
 %if %{with apidocs}
@@ -269,10 +269,10 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with vala}
 %files -n vala-tracker
 %defattr(644,root,root,755)
-%{_datadir}/vala/vapi/tracker-control-%{mver}.deps
-%{_datadir}/vala/vapi/tracker-control-%{mver}.vapi
-%{_datadir}/vala/vapi/tracker-miner-%{mver}.deps
-%{_datadir}/vala/vapi/tracker-miner-%{mver}.vapi
-%{_datadir}/vala/vapi/tracker-sparql-%{mver}.deps
-%{_datadir}/vala/vapi/tracker-sparql-%{mver}.vapi
+%{_datadir}/vala/vapi/tracker-control-%{abiver}.deps
+%{_datadir}/vala/vapi/tracker-control-%{abiver}.vapi
+%{_datadir}/vala/vapi/tracker-miner-%{abiver}.deps
+%{_datadir}/vala/vapi/tracker-miner-%{abiver}.vapi
+%{_datadir}/vala/vapi/tracker-sparql-%{abiver}.deps
+%{_datadir}/vala/vapi/tracker-sparql-%{abiver}.vapi
 %endif
