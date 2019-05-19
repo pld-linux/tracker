@@ -165,6 +165,7 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	%{!?with_static_libs:--default-library=shared} \
 	%{?with_apidocs:-Ddocs=true} \
 	-Dfunctional_tests=false \
+	-Dsystemd_user_services=%{systemduserunitdir} \
 	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
 
 %ninja_build -C build -j1
