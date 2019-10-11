@@ -9,14 +9,15 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	2.2.2
+Version:	2.3.0
 Release:	1
 License:	GPL v2+
 Group:		Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.2/%{name}-%{version}.tar.xz
-# Source0-md5:	2ec18c6f9e877abdfe1f50bac0e9eade
-URL:		http://projects.gnome.org/tracker/
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
+# Source0-md5:	5bdcb2453eae505f7f9932f903a66159
+URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel >= 0.8.0
+BuildRequires:	dbus-devel >= 1.3.1
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.46.0
@@ -179,6 +180,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/tracker-%{abiver}/libtracker-*.a
 %endif
 
+# python package to help testing... let's assume it's not needed in package
+%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/tracker-2.0/trackertestutils
+
 %find_lang tracker
 
 %clean
@@ -227,8 +231,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libtracker-sparql-%{abiver}.so.0
 # required by libtracker-miner
 %dir %{_libdir}/tracker-%{abiver}
-%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-common.so*
-%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-data.so*
+%attr(755,root,root) %{_libdir}/tracker-%{abiver}/libtracker-data.so
 %{_libdir}/girepository-1.0/Tracker-%{abiver}.typelib
 %{_libdir}/girepository-1.0/TrackerControl-%{abiver}.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-%{abiver}.typelib
