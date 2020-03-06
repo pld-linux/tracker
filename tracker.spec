@@ -9,12 +9,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	2.3.1
+Version:	2.3.2
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
-# Source0-md5:	5e75b611b190c4cebf53e3de15266429
+# Source0-md5:	cf33599c3f363cfdc07fd49888051378
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	dbus-devel >= 1.3.1
@@ -118,7 +118,7 @@ Summary:	Tracker libraries API documentation
 Summary(pl.UTF-8):	Dokumentacja API bibliotek Trackera
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -147,7 +147,7 @@ Summary(pl.UTF-8):	API tracker dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.18.0
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
