@@ -9,12 +9,12 @@
 Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
-Version:	2.3.4
+Version:	2.3.5
 Release:	1
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
-# Source0-md5:	9937cf4812ca85078907324c7cdf7dd8
+# Source0-md5:	371bb473bb02949babc6260935f5e45c
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel >= 0.8.0
 BuildRequires:	dbus-devel >= 1.3.1
@@ -211,6 +211,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/tracker
 %{systemduserunitdir}/tracker-store.service
 %{_mandir}/man1/tracker-daemon.1*
+%{_mandir}/man1/tracker-export.1*
 %{_mandir}/man1/tracker-index.1*
 %{_mandir}/man1/tracker-info.1*
 %{_mandir}/man1/tracker-reset.1*
