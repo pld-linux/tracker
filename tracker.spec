@@ -118,9 +118,7 @@ Summary:	Tracker libraries API documentation
 Summary(pl.UTF-8):	Dokumentacja API bibliotek Trackera
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 Tracker libraries API documentation.
@@ -147,9 +145,7 @@ Summary(pl.UTF-8):	API tracker dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.18.0
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description -n vala-tracker
 tracker API for Vala language.
