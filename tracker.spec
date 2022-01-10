@@ -10,7 +10,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	2.3.6
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
@@ -35,16 +35,18 @@ BuildRequires:	meson >= 0.47
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3.2
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	sqlite3-devel >= 3.21.0-2
 BuildRequires:	tar >= 1:1.22
 %{?with_vala:BuildRequires:	vala >= 2:0.18.0}
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 Requires(post,postun):	glib2 >= 1:2.46.0
+Requires(post,preun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus >= 1.3.1
 Requires:	libxml2 >= 1:2.6.31
+Requires:	systemd-units >= 1:250.1
 Obsoletes:	evolution-plugin-tracker < 2
 Obsoletes:	firefox-extension-tracker < 2
 Obsoletes:	gnome-applet-deskbar-extension-tracker
@@ -186,6 +188,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %glib_compile_schemas
+%systemd_user_post tracker-store.service
+
+%preun
+%systemd_user_preun tracker-store.service
 
 %postun
 %glib_compile_schemas
