@@ -10,7 +10,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	2.3.6
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
@@ -76,7 +76,7 @@ Requires:	NetworkManager-libs >= 0.8.0
 Requires:	glib2 >= 1:2.46.0
 Requires:	json-glib >= 1.0
 Requires:	libsoup >= 2.40
-Requires:	sqlite3 >= 3.21.0-2
+Requires:	sqlite3-libs >= 3.21.0-2
 Obsoletes:	libtracker
 Obsoletes:	libtracker-gtk
 
