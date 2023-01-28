@@ -49,14 +49,14 @@ Requires:	libxml2 >= 1:2.6.31
 Requires:	systemd-units >= 1:250.1
 Obsoletes:	evolution-plugin-tracker < 2
 Obsoletes:	firefox-extension-tracker < 2
-Obsoletes:	gnome-applet-deskbar-extension-tracker
-Obsoletes:	gnome-applet-tracker
+Obsoletes:	gnome-applet-deskbar-extension-tracker < 0.8
+Obsoletes:	gnome-applet-tracker < 0.16
 Obsoletes:	icedove-extension-tracker < 2
 Obsoletes:	iceweasel-extension-tracker < 2
 Obsoletes:	nautilus-extension-tracker < 2
 Obsoletes:	thunderbird-extension-tracker < 2
-Obsoletes:	tracker-search-gui
-Obsoletes:	tracker-startup
+Obsoletes:	tracker-search-gui < 0.8
+Obsoletes:	tracker-startup < 0.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # circular dependencies: libtracker-data -> libtracker-libtracker-direct -> libtracker-sparql-backend [->] libtracker-data
@@ -77,8 +77,8 @@ Requires:	glib2 >= 1:2.46.0
 Requires:	json-glib >= 1.0
 Requires:	libsoup >= 2.40
 Requires:	sqlite3-libs >= 3.21.0-2
-Obsoletes:	libtracker
-Obsoletes:	libtracker-gtk
+Obsoletes:	libtracker < 0.8
+Obsoletes:	libtracker-gtk < 0.8
 
 %description libs
 Tracker libraries.
@@ -92,9 +92,9 @@ Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Trackera
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.46.0
-Obsoletes:	libtracker-devel
-Obsoletes:	libtracker-gtk-devel
-Obsoletes:	libtracker-gtk-static
+Obsoletes:	libtracker-devel < 0.8
+Obsoletes:	libtracker-gtk-devel < 0.8
+Obsoletes:	libtracker-gtk-static < 0.8
 %{!?with_static_libs:Obsoletes:	libtracker-static}
 
 %description devel
