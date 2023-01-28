@@ -134,6 +134,7 @@ Summary(pl.UTF-8):	Bashowe uzupełnianie parametrów dla polecenia tracker
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
+BuildArch:	noarch
 
 %description -n bash-completion-tracker
 Bash completion for tracker command.
