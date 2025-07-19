@@ -10,7 +10,7 @@ Summary:	Tracker - an indexing subsystem
 Summary(pl.UTF-8):	Tracker - podsystem indeksujący
 Name:		tracker
 Version:	2.3.6
-Release:	8
+Release:	9
 License:	GPL v2+
 Group:		Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/2.3/%{name}-%{version}.tar.xz
@@ -159,6 +159,9 @@ API tracker dla języka Vala.
 %prep
 %setup -q
 
+# hack
+[ ! -f src/libtracker-common/tracker-backup.h ] && :> src/libtracker-common/tracker-backup.h
+
 %build
 CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 %meson \
@@ -167,8 +170,6 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/libstemmer"
 	-Dfunctional_tests=false \
 	-Dsystemd_user_services=%{systemduserunitdir} \
 	-Dunicode_support=%{?with_icu:icu}%{!?with_icu:unistring}
-
-#[ ! -f src/trackerd/tracker-backup.h ] && :> src/trackerd/tracker-backup.h
 
 %meson_build -j1
 
